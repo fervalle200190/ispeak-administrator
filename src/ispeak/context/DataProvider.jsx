@@ -1,0 +1,147 @@
+import { useEffect, useState } from "react";
+import {
+     useCourses,
+     useProfessors,
+     usePrograms,
+     useStudents,
+     useChangeDataStudent,
+     useChangeDataProfessor,
+     useStudyMaterials,
+     useSupportMaterial,
+     useCourseSignUps,
+     useSignUpsOnDemand,
+     useAttends,
+     useAdmins,
+} from "../../hooks";
+import {
+     getAllAdmin,
+     getAllAttends,
+     getAllCourses,
+     getAllPrograms,
+     getAllSignUp,
+     getAllSignUpOnDemand,
+     getAllStudyMaterial,
+     getAllSupportMaterial,
+     getAllUsers,
+} from "../../utils";
+import { DataContext } from "./DataContext";
+
+const initialState = { columns: [], rows: [] };
+
+export const DataProvider = ({ children }) => {
+     const [students, setStudents] = useState(initialState);
+     const [professors, setProfessors] = useState(initialState);
+     const [programs, setPrograms] = useState(initialState);
+     const [courses, setCourses] = useState(initialState);
+     const [studyMaterial, setStudyMaterial] = useState(initialState);
+     const [supportMaterial, setSupportMaterial] = useState(initialState);
+     const [signUp, setSignUp] = useState(initialState);
+     const [signUpOnDemand, setSignUpOnDemand] = useState(initialState);
+     const [attend, setAttend] = useState(initialState);
+     const [admin, setAdmin] = useState(initialState);
+
+     const getStudentsAndProfessors = async () => {
+          const users = await getAllUsers();
+          const { columns, rows } = useStudents(users);
+          const professors = useProfessors(users);
+          setStudents({ columns, rows });
+          setProfessors({ columns: professors.columns, rows: professors.rows });
+     };
+     const getPrograms = async () => {
+          const programsRes = await getAllPrograms();
+          const { columns, rows } = usePrograms(programsRes);
+          setPrograms({ columns, rows });
+     };
+
+     const getCourses = async () => {
+          const courses = await getAllCourses();
+          const { columns, rows } = useCourses(courses);
+          setCourses({ columns, rows });
+     };
+
+     const getStudyMaterials = async () => {
+          const studyMaterials = await getAllStudyMaterial();
+          const { columns, rows } = useStudyMaterials(studyMaterials);
+          setStudyMaterial({ columns, rows });
+     };
+
+     const getSupportMaterials = async () => {
+          const supportMaterials = await getAllSupportMaterial();
+          const { columns, rows } = useSupportMaterial(supportMaterials);
+          setSupportMaterial({ columns, rows });
+     };
+
+     const getSignUps = async () => {
+          const signUps = await getAllSignUp();
+          const { columns, rows } = useCourseSignUps(signUps);
+          setSignUp({ columns, rows });
+     };
+
+     const getSignUpsOnDemand = async () => {
+          const signUpsOnDemand = await getAllSignUpOnDemand();
+          const { columns, rows } = useSignUpsOnDemand(signUpsOnDemand);
+          setSignUpOnDemand({ columns, rows });
+     };
+
+     const getAttends = async () => {
+          const attends = await getAllAttends();
+          const { columns, rows } = useAttends(attends);
+          setAttend({ columns, rows });
+     };
+
+     const getAdmins = async () => {
+          const admins = await getAllAdmin();
+          const { columns, rows } = useAdmins(admins);
+          setAdmin({ columns, rows });
+     };
+
+     const { updateStudents, deleteStudent, addStudent } = useChangeDataStudent(
+          {
+               setStudents,
+               students,
+          }
+     );
+
+     const { updateProfessors, deleteProfessor, addProfessor } =
+          useChangeDataProfessor({
+               setProfessors,
+               professors,
+          });
+
+     useEffect(() => {
+          getStudentsAndProfessors();
+          getPrograms();
+          getCourses();
+          getStudyMaterials();
+          getSupportMaterials();
+          getSignUps();
+          getSignUpsOnDemand();
+          getAttends();
+          getAdmins();
+     }, []);
+
+     return (
+          <DataContext.Provider
+               value={{
+                    students,
+                    updateStudents,
+                    deleteStudent,
+                    addStudent,
+                    professors,
+                    updateProfessors,
+                    deleteProfessor,
+                    addProfessor,
+                    programs,
+                    courses,
+                    studyMaterial,
+                    supportMaterial,
+                    signUp,
+                    signUpOnDemand,
+                    attend,
+                    admin
+               }}
+          >
+               {children}
+          </DataContext.Provider>
+     );
+};

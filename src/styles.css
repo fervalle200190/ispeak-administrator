@@ -1,0 +1,24 @@
+.MuiDrawer-paper {
+     background: linear-gradient(to bottom, #0d2e68, #00001c);
+     overflow-x: hidden;
+}
+
+.MuiDrawer-paper::-webkit-scrollbar {
+     width: 10px;
+}
+
+.MuiDrawer-paper::-webkit-scrollbar-track {
+     background: #f1f1f1;
+}
+
+.MuiDrawer-paper::-webkit-scrollbar-thumb {
+     background: #31599e;
+}
+
+.link-active .MuiListItem-root {
+    background: #000027;
+}
+
+.textfield-label {
+     color: #000027 !important;
+}
