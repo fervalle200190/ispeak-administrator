@@ -1,5 +1,5 @@
 import {
-    Alert,
+     Alert,
      Box,
      Button,
      Checkbox,
@@ -12,7 +12,7 @@ import {
 import { useContext, useState } from "react";
 import { useAddProfessor, useForm } from "../../hooks";
 import { postUser } from "../../utils";
-import { PageHeader, SelectOptions } from "../components";
+import { CheckboxCont, PageHeader, SelectOptions } from "../components";
 import { DataContext } from "../context";
 import { countriesRatio, genreRatio } from "../utils";
 
@@ -27,7 +27,7 @@ const initialForm = {
 
 export const AddProfessorPage = () => {
      const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
-     const { addProfessor } = useContext(DataContext)
+     const { addProfessor } = useContext(DataContext);
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
      const {
           genre,
@@ -36,13 +36,12 @@ export const AddProfessorPage = () => {
           handleCountry,
           blocked,
           handleCheck,
-          resetUse
+          resetUse,
      } = useAddProfessor();
 
-
      const handleSnackbar = () => {
-        setIsSnackBarOpen(!isSnackBarOpen);
-   };
+          setIsSnackBarOpen(!isSnackBarOpen);
+     };
 
      const handleSubmit = async (e) => {
           e.preventDefault();
@@ -75,7 +74,7 @@ export const AddProfessorPage = () => {
                resetUse();
                addProfessor(res);
           }
-          console.log(res)
+          console.log(res);
      };
      return (
           <>
@@ -187,20 +186,11 @@ export const AddProfessorPage = () => {
                               </Grid>
                          </Grid>
                          <Grid item xs={12} sx={{ m: 1 }}>
-                              <FormGroup>
-                                   <FormControlLabel
-                                        control={
-                                             <Checkbox
-                                                  value={blocked}
-                                                  onChange={handleCheck}
-                                                  sx={{
-                                                       color: "primary.main",
-                                                  }}
-                                             />
-                                        }
-                                        label="Bloqueado"
-                                   />
-                              </FormGroup>
+                              <CheckboxCont
+                                   handleCheck={handleCheck}
+                                   value={blocked}
+                                   label={"Bloqueado"}
+                              />
                          </Grid>
                          <Button
                               type="submit"

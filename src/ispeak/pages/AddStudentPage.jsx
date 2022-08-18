@@ -11,7 +11,7 @@ import {
 import { useContext, useState } from "react";
 import { useAddStudents, useForm } from "../../hooks";
 import { postUser } from "../../utils";
-import { PageHeader, SelectOptions } from "../components";
+import { CheckboxCont, PageHeader, SelectOptions } from "../components";
 import { DataContext } from "../context";
 import { genreRatio, countriesRatio } from "../utils";
 
@@ -27,7 +27,7 @@ const initialForm = {
 
 export const AddStudentPage = () => {
      const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
-     const { addStudent } = useContext(DataContext)
+     const { addStudent } = useContext(DataContext);
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
      const {
           genre,
@@ -72,13 +72,13 @@ export const AddStudentPage = () => {
                handleSnackbar();
                onResetForm();
                resetUse();
-               addStudent(res)
+               addStudent(res);
           }
      };
      return (
           <>
                <PageHeader title={"Alta de Alumnos"} />
-               <form onSubmit={handleSubmit} autoComplete='off'>
+               <form onSubmit={handleSubmit} autoComplete="off">
                     <Grid
                          container
                          justifyContent={"center"}
@@ -209,20 +209,11 @@ export const AddStudentPage = () => {
                                    />
                               </Grid>
                               <Grid item xs={12} sx={{ m: 1 }}>
-                                   <FormGroup>
-                                        <FormControlLabel
-                                             control={
-                                                  <Checkbox
-                                                       value={blocked}
-                                                       onChange={handleCheck}
-                                                       sx={{
-                                                            color: "primary.main",
-                                                       }}
-                                                  />
-                                             }
-                                             label="Bloqueado"
-                                        />
-                                   </FormGroup>
+                                   <CheckboxCont
+                                        label={"Bloqueado"}
+                                        handleCheck={handleCheck}
+                                        value={blocked}
+                                   />
                               </Grid>
                          </Grid>
                     </Grid>

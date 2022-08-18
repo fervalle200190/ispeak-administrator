@@ -3,6 +3,7 @@ import { DataProvider, ModalProvider } from "../context";
 import { IspeakLayout } from "../layout/IspeakLayout";
 import {
      AddProfessorPage,
+     AddProgramsPage,
      AddStudentPage,
      AdministratorPage,
      AttendsPage,
@@ -29,6 +30,7 @@ export const IspeakRoutes = () => {
                               <Route path="professor" element={<ProfessorPage />} />
                               <Route path="professor/ingresar" element={<AddProfessorPage />} />
                               <Route path="programs" element={<ProgramsPage />} />
+                              <Route path='programs/ingresar' element={<AddProgramsPage />} />
                               <Route path="courses" element={<CoursesPage />} />
                               <Route path='study-material' element={<StudyMaterialPage />} />
                               <Route path='support-material' element={<SupportMaterialPage />} />
