@@ -12,6 +12,8 @@ import {
      useSignUpsOnDemand,
      useAttends,
      useAdmins,
+     useChangeDataPrograms,
+     useChangeData,
 } from "../../hooks";
 import {
      getAllAdmin,
@@ -24,6 +26,7 @@ import {
      getAllSupportMaterial,
      getAllUsers,
 } from "../../utils";
+import { changeCourses, changeStudyMaterials } from "../helper";
 import { DataContext } from "./DataContext";
 
 const initialState = { columns: [], rows: [] };
@@ -108,6 +111,12 @@ export const DataProvider = ({ children }) => {
                professors,
           });
 
+     const { updatePrograms, deletePrograms, addPrograms } = useChangeDataPrograms({setPrograms, programs})
+
+     const coursesChangers = useChangeData(courses, setCourses, changeCourses)
+
+     const studyMaterialsChangers = useChangeData(studyMaterial, setStudyMaterial, changeStudyMaterials)
+
      useEffect(() => {
           getStudentsAndProfessors();
           getPrograms();
@@ -124,6 +133,7 @@ export const DataProvider = ({ children }) => {
           <DataContext.Provider
                value={{
                     students,
+                    setStudents,
                     updateStudents,
                     deleteStudent,
                     addStudent,
@@ -132,13 +142,18 @@ export const DataProvider = ({ children }) => {
                     deleteProfessor,
                     addProfessor,
                     programs,
+                    updatePrograms,
+                    deletePrograms,
+                    addPrograms,
                     courses,
                     studyMaterial,
                     supportMaterial,
                     signUp,
                     signUpOnDemand,
                     attend,
-                    admin
+                    admin,
+                    coursesChangers,
+                    studyMaterialsChangers
                }}
           >
                {children}

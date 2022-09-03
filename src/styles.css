@@ -20,5 +20,9 @@
 }
 
 .textfield-label {
-     color: #000027 !important;
+     color: #0d2e68 !important;
+}
+
+#label-id {
+     color: #000;
 }

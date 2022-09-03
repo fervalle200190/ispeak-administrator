@@ -1,17 +1,13 @@
-import {
-     Alert,
-     Button,
-     Checkbox,
-     FormControlLabel,
-     FormGroup,
-     Grid,
-     Snackbar,
-     TextField,
-} from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import { useAddStudents, useForm } from "../../hooks";
 import { postUser } from "../../utils";
-import { CheckboxCont, PageHeader, SelectOptions } from "../components";
+import {
+     CheckboxCont,
+     PageHeader,
+     SelectOptions,
+     SnackBarComponent,
+} from "../components";
 import { DataContext } from "../context";
 import { genreRatio, countriesRatio } from "../utils";
 
@@ -226,20 +222,11 @@ export const AddStudentPage = () => {
                          Enviar
                     </Button>
                </form>
-               <Snackbar
-                    open={isSnackBarOpen}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                    autoHideDuration={6000}
-                    onClose={handleSnackbar}
-               >
-                    <Alert
-                         onClose={handleSnackbar}
-                         severity="success"
-                         sx={{ width: "100%" }}
-                    >
-                         El usuario ha sido creado exitosamente!!
-                    </Alert>
-               </Snackbar>
+               <SnackBarComponent
+                    handleSnackbar={handleSnackbar}
+                    isSnackBarOpen={isSnackBarOpen}
+                    message='El alumno ha sido creado exitosamente!!'
+               />
           </>
      );
 };

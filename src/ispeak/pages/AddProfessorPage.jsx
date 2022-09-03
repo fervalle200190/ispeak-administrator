@@ -1,18 +1,18 @@
 import {
-     Alert,
      Box,
      Button,
-     Checkbox,
-     FormControlLabel,
-     FormGroup,
      Grid,
-     Snackbar,
      TextField,
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { useAddProfessor, useForm } from "../../hooks";
 import { postUser } from "../../utils";
-import { CheckboxCont, PageHeader, SelectOptions } from "../components";
+import {
+     CheckboxCont,
+     PageHeader,
+     SelectOptions,
+     SnackBarComponent,
+} from "../components";
 import { DataContext } from "../context";
 import { countriesRatio, genreRatio } from "../utils";
 
@@ -74,7 +74,6 @@ export const AddProfessorPage = () => {
                resetUse();
                addProfessor(res);
           }
-          console.log(res);
      };
      return (
           <>
@@ -201,20 +200,11 @@ export const AddProfessorPage = () => {
                          </Button>
                     </Box>
                </Grid>
-               <Snackbar
-                    open={isSnackBarOpen}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                    autoHideDuration={6000}
-                    onClose={handleSnackbar}
-               >
-                    <Alert
-                         onClose={handleSnackbar}
-                         severity="success"
-                         sx={{ width: "100%" }}
-                    >
-                         El profesor ha sido creado exitosamente!!
-                    </Alert>
-               </Snackbar>
+               <SnackBarComponent
+                    handleSnackbar={handleSnackbar}
+                    isSnackBarOpen={isSnackBarOpen}
+                    message='El profesor ha sido creado exitosamente!!'
+               />
           </>
      );
 };

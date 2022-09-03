@@ -1,15 +1,27 @@
 import { Box } from "@mui/material";
 import { useContext } from "react";
-import { Datagrid, ModalAction, PageHeader } from "../components";
+import { useEditData } from "../../hooks";
+import { Datagrid, ModalAction, ModalEdit, PageHeader, SnackBarComponent } from "../components";
 import { DataContext, ModalContext } from "../context";
 
 export const ProfessorPage = () => {
      const { professors, updateProfessors, deleteProfessor } =
           useContext(DataContext);
 
-     const { isModalOpen, handleModal, id }= useContext(ModalContext)
+     const { isModalOpen, handleModal, id } = useContext(ModalContext);
+
+     const {
+          isModalUpdateOpen,
+          isSnackBarEditOpen,
+          handleAnswer,
+          handleSnackBar,
+          commitHandler,
+          stopHandler,
+          handleCloseModal,
+     } = useEditData(updateProfessors, true);
+
      const handleDelete = () => {
-          deleteProfessor(id)
+          deleteProfessor(id);
      };
      return (
           <>
@@ -18,6 +30,12 @@ export const ProfessorPage = () => {
                     handleModal={handleModal}
                     handleAction={handleDelete}
                     title="¿Estas seguro de eliminar este profesor?"
+               />
+               <ModalEdit
+                    isModalOpen={isModalUpdateOpen}
+                    handleClose={handleCloseModal}
+                    handleAction={handleAnswer}
+                    title="¿Estas seguro de editar este profesor?"
                />
                <PageHeader
                     title={"Profesores"}
@@ -28,9 +46,15 @@ export const ProfessorPage = () => {
                     <Datagrid
                          rows={professors.rows}
                          columns={professors.columns}
-                         updateHandler={updateProfessors}
+                         updateHandler={commitHandler}
+                         stopHandler={stopHandler}
                     />
                </Box>
+               <SnackBarComponent
+                    isSnackBarOpen={isSnackBarEditOpen}
+                    handleSnackbar={handleSnackBar}
+                    message="Usuario editado correctamente"
+               />
           </>
      );
 };

@@ -1,7 +1,12 @@
 import { returnCountry } from "../ispeak/utils";
+import { deleteUser, getUserById, updateUser } from "../utils";
+import { useUpdateUser } from "./useUpdateUser";
 
 export const useChangeDataProfessor = ({ professors, setProfessors }) => {
-     const updateProfessors = (data) => {
+     const updateProfessors = async (data) => {
+          const user = await getUserById(data.id);
+          const { newUser } = useUpdateUser(user, data, 'Profesor');
+          const userUpdated = await updateUser(JSON.stringify(newUser));
           const newUpdate = professors.rows.map((professor) => {
                if (professor.id === data.id) {
                     return {
@@ -16,7 +21,9 @@ export const useChangeDataProfessor = ({ professors, setProfessors }) => {
                rows: newUpdate,
           });
      };
-     const deleteProfessor = (id) => {
+     const deleteProfessor = async (id) => {
+          const res = await deleteUser(id);
+          if (res !== "Usuario Eliminado") return;
           const newData = professors.rows.filter(
                (professor) => professor.id !== id
           );

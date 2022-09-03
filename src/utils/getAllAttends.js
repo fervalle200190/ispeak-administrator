@@ -1,6 +1,6 @@
-import { ispeakAPI } from "./IspeakAPI";
+import { id, ispeakAPI } from "./IspeakAPI";
 
 export const getAllAttends = async () => {
-     const { data } = await ispeakAPI.get(`/Asistencias/GetAll/1234`);
+     const { data } = await ispeakAPI.get(`/Asistencias/GetAll/1234/${id}`);
      return data;
 };

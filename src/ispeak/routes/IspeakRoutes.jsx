@@ -2,9 +2,11 @@ import { Route, Navigate, Routes } from "react-router-dom";
 import { DataProvider, ModalProvider } from "../context";
 import { IspeakLayout } from "../layout/IspeakLayout";
 import {
+     AddCoursesPage,
      AddProfessorPage,
      AddProgramsPage,
      AddStudentPage,
+     AddStudyMaterialPage,
      AdministratorPage,
      AttendsPage,
      CoursesPage,
@@ -32,7 +34,9 @@ export const IspeakRoutes = () => {
                               <Route path="programs" element={<ProgramsPage />} />
                               <Route path='programs/ingresar' element={<AddProgramsPage />} />
                               <Route path="courses" element={<CoursesPage />} />
+                              <Route path='courses/ingresar' element={<AddCoursesPage />} />
                               <Route path='study-material' element={<StudyMaterialPage />} />
+                              <Route path='study-material/ingresar' element={<AddStudyMaterialPage />} />
                               <Route path='support-material' element={<SupportMaterialPage />} />
                               <Route path="sign-courses" element={<SignUpCoursesPage />} />
                               <Route path='sign-ondemand' element={<SignUpOnDemandPage />} />

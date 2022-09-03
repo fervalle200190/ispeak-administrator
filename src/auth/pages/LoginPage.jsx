@@ -15,6 +15,7 @@ export const LoginPage = () => {
           });
           if (res.status === 200) {
                handleLogin();
+               localStorage.setItem('LoggedUser', JSON.stringify(res.data))
           }
      };
      return (

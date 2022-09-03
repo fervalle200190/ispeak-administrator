@@ -9,7 +9,7 @@ export const useStudents = (users) => {
                width: 150,
                editable: true,
           },
-          { field: "email", headerName: "E-mail", width: 150 },
+          { field: "email", headerName: "E-mail", width: 150, editable: true },
           { field: "city", headerName: "Ciudad", width: 150 },
           { field: "country", headerName: "País", width: 150 },
           { field: "currentCourse", headerName: "Curso Actual" },

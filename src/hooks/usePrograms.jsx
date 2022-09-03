@@ -2,9 +2,9 @@ import { DeleteData } from "../ispeak/components";
 
 export const usePrograms = (programs) => {
      const columns = [
-          { field: "id", headerName: "Código", width: 150 },
-          { field: "name", headerName: "Nombre", width: 300 },
-          { field: "active", headerName: "Activo", width: 150 },
+          { field: "id", headerName: "Código", width: 150, editable: true },
+          { field: "name", headerName: "Nombre", width: 300, editable: true },
+          { field: "active", headerName: "Activo", width: 150, editable: true },
           {
                field: "actions",
                headerName: "",

@@ -1,6 +1,8 @@
 export const genreRatio = [
      { label: "Hombre", value: "M" },
      { label: "Mujer", value: "F" },
+     { label: 'No binario', value: "B"},
+     { label: 'Otro', value: "O"},
 ];
 
 export const countriesRatio = [

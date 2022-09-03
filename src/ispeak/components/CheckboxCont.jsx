@@ -8,6 +8,7 @@ export const CheckboxCont = ({ label, handleCheck, value, name = '' }) => {
                          <Checkbox
                               value={value}
                               name={name}
+                              checked={value}
                               onChange={handleCheck}
                               sx={{
                                    color: "primary.main",
