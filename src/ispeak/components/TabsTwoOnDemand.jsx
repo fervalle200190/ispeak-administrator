@@ -4,7 +4,7 @@ import { useCourseByBusiness, useEditData } from "../../hooks";
 import { getModuleById, updateModule } from "../../utils";
 import { CourseContext, DataContext, ModalContext, ModalTabsContext } from "../context";
 import { processBusinessUnit, processModule } from "../helper";
-import { AddModuleOnDemandModal } from "./AddModuleOnDemandModal";
+import { AddModuleModal } from "./AddModuleModal";
 import { Datagrid } from "./Datagrid";
 import { ModalAction } from "./ModalAction";
 import { ModalEdit } from "./ModalEdit";
@@ -87,7 +87,7 @@ export const TabsTwoOnDemand = () => {
                          Agregar Modulo
                     </Button>
                </Grid>
-               <AddModuleOnDemandModal
+               <AddModuleModal
                     courses={coursesList}
                     handleModal={handleModalAdd}
                />

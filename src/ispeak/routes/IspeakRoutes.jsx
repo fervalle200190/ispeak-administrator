@@ -5,8 +5,11 @@ import {
      AddCoursesPage,
      AddProfessorPage,
      AddProgramsPage,
+     AddSignUpOnDemandPage,
+     AddSignUpPage,
      AddStudentPage,
      AddStudyMaterialPage,
+     AddSupportMaterialPage,
      AdministratorPage,
      AttendsPage,
      CoursesPage,
@@ -38,8 +41,11 @@ export const IspeakRoutes = () => {
                               <Route path='study-material' element={<StudyMaterialPage />} />
                               <Route path='study-material/ingresar' element={<AddStudyMaterialPage />} />
                               <Route path='support-material' element={<SupportMaterialPage />} />
+                              <Route path='support-material/ingresar' element={<AddSupportMaterialPage />} />
                               <Route path="sign-courses" element={<SignUpCoursesPage />} />
+                              <Route path="sign-courses/ingresar" element={<AddSignUpPage />} />
                               <Route path='sign-ondemand' element={<SignUpOnDemandPage />} />
+                              <Route path='sign-ondemand/ingresar' element={<AddSignUpOnDemandPage />} />
                               <Route path='attendance' element={<AttendsPage />} />
                               <Route path='administrators' element={<AdministratorPage />} />
                               <Route path="/*" element={<Navigate to="/" />} />

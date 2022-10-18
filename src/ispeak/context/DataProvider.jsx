@@ -36,6 +36,7 @@ export const DataProvider = ({ children }) => {
      const [professors, setProfessors] = useState(initialState);
      const [programs, setPrograms] = useState(initialState);
      const [courses, setCourses] = useState(initialState);
+     const [coursesRaw, setCoursesRaw] = useState([])
      const [studyMaterial, setStudyMaterial] = useState(initialState);
      const [supportMaterial, setSupportMaterial] = useState(initialState);
      const [signUp, setSignUp] = useState(initialState);
@@ -58,6 +59,7 @@ export const DataProvider = ({ children }) => {
 
      const getCourses = async () => {
           const courses = await getAllCourses();
+          setCoursesRaw(courses)
           const { columns, rows } = useCourses(courses);
           setCourses({ columns, rows });
      };
@@ -117,6 +119,8 @@ export const DataProvider = ({ children }) => {
 
      const studyMaterialsChangers = useChangeData(studyMaterial, setStudyMaterial, changeStudyMaterials)
 
+     const supportMaterialsChangers = useChangeData(supportMaterial, setSupportMaterial)
+
      useEffect(() => {
           getStudentsAndProfessors();
           getPrograms();
@@ -146,6 +150,7 @@ export const DataProvider = ({ children }) => {
                     deletePrograms,
                     addPrograms,
                     courses,
+                    coursesRaw,
                     studyMaterial,
                     supportMaterial,
                     signUp,
@@ -153,7 +158,10 @@ export const DataProvider = ({ children }) => {
                     attend,
                     admin,
                     coursesChangers,
-                    studyMaterialsChangers
+                    studyMaterialsChangers,
+                    getStudyMaterials,
+                    getSupportMaterials,
+                    supportMaterialsChangers
                }}
           >
                {children}

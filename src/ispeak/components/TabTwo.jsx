@@ -2,9 +2,14 @@ import { Box, Button, Grid } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { useCourseByBusiness, useEditData } from "../../hooks";
 import { getModuleById, updateModule } from "../../utils";
-import { CourseContext, DataContext, ModalContext, ModalTabsContext } from "../context";
+import {
+     CourseContext,
+     DataContext,
+     ModalContext,
+     ModalTabsContext,
+} from "../context";
 import { processBusinessUnit, processModule } from "../helper";
-import { AddModuleOnDemandModal } from "./AddModuleOnDemandModal";
+import { AddModuleModal } from "./AddModuleModal";
 import { Datagrid } from "./Datagrid";
 import { ModalAction } from "./ModalAction";
 import { ModalEdit } from "./ModalEdit";
@@ -23,7 +28,6 @@ export const TabTwo = () => {
      const courseBusiness = useCourseByBusiness(modulesRaw, 2);
      const { courses } = useContext(DataContext);
      const { isModalOpen, handleModal, id } = useContext(ModalContext);
-
 
      const {
           isModalUpdateOpen,
@@ -93,7 +97,7 @@ export const TabTwo = () => {
                          Agregar Modulo
                     </Button>
                </Grid>
-               <AddModuleOnDemandModal
+               <AddModuleModal
                     courses={coursesList}
                     handleModal={handleModalAdd}
                />

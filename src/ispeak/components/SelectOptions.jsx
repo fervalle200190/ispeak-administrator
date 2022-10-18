@@ -14,7 +14,17 @@ export const SelectOptions = ({
                     fullWidth
                     value={value}
                     onChange={handleSelect}
-                    SelectProps={{ multiple }}
+                    SelectProps={{
+                         multiple,
+                         sx: {
+                              maxWidth: {
+                                   xs: '300px',
+                                   sm: "600px",
+                                   md: "900px",
+                                   lg: "1200px",
+                              },
+                         },
+                    }}
                     variant={"outlined"}
                     multiple={multiple}
                     select

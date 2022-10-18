@@ -8,3 +8,5 @@ export * from "./CourseContext";
 export * from "./CourseProvider";
 export * from './ModalTabsContext'
 export * from './ModalTabsProvider'
+export * from './RoomsContext'
+export * from './RoomsProvider'

@@ -4,7 +4,6 @@ export const useCourseByBusiness = (coursesRaw, businessId) => {
      const [courses, setCourses] = useState([]);
 
      useEffect(() => {
-          console.log(coursesRaw)
           const coursesCleared = coursesRaw
                .filter((course) => {
                     if (businessId === 4) {

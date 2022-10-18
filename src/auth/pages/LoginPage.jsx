@@ -13,6 +13,9 @@ export const LoginPage = () => {
                email: formState.email,
                password: formState.password,
           });
+          if(res.response.data.message) {
+               return alert(res.response.data.message)
+          }
           if (res.status === 200) {
                handleLogin();
                localStorage.setItem('LoggedUser', JSON.stringify(res.data))

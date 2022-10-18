@@ -1,8 +1,8 @@
 export const genreRatio = [
      { label: "Hombre", value: "M" },
      { label: "Mujer", value: "F" },
-     { label: 'No binario', value: "B"},
-     { label: 'Otro', value: "O"},
+     { label: "No binario", value: "B" },
+     { label: "Otro", value: "O" },
 ];
 
 export const countriesRatio = [
@@ -20,4 +20,14 @@ export const countriesRatio = [
      { label: "Perú", value: 3 },
      { label: "Uruguay", value: 11 },
      { label: "Venezuela", value: 6 },
+];
+
+export const kindOfSupport = [
+     { label: "Vocabulario", value: "Vocabulario" },
+     { label: "Gramática", value: "Gramatica" },
+];
+
+export const kindOfMaterial = [
+     { label: "PDF", value: "PDF" },
+     { label: "Video", value: "Video" },
 ];

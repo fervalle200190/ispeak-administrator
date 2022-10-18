@@ -10,7 +10,7 @@ export const SignUpOnDemandPage = () => {
                <PageHeader
                     title="Inscripciones Cursos OnDemand"
                     buttonTitle={"Agregar cursos"}
-                    url="sign-ondemand"
+                    url="ingresar"
                />
                <Box height={"100vh"} sx={{ pr: 2 }}>
                     <Datagrid

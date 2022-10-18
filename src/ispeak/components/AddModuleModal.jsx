@@ -14,7 +14,7 @@ const initialForm = {
      objetivos: "",
 };
 
-export const AddModuleOnDemandModal = ({ courses, handleModal }) => {
+export const AddModuleModal = ({ courses, handleModal }) => {
      const { formState, onInputChange, onResetForm} = useForm(initialForm);
      const [courseModule, setCourseModule] = useState("");
      const { addModule } = useContext(CourseContext);

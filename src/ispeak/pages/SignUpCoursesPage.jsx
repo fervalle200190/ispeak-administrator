@@ -10,7 +10,7 @@ export const SignUpCoursesPage = () => {
                <PageHeader
                     title={"Inscripciones"}
                     buttonTitle="Agregar inscripciones"
-                    url="sign-courses/ingresar"
+                    url="/sign-courses/ingresar"
                />
                <Box height={"100vh"} sx={{ pr: 2 }}>
                     <Datagrid columns={signUp.columns} rows={signUp.rows} />

@@ -7,6 +7,7 @@ import {
      TextField,
      Typography,
 } from "@mui/material";
+import { useContext } from "react";
 import { useMemo, useState } from "react";
 import { useAddStudyMaterials, useForm } from "../../hooks";
 import {
@@ -14,6 +15,7 @@ import {
      updateFiles,
      uploadGeneralFiles,
 } from "../../utils";
+import { DataContext } from "../context";
 import { newModules, processModulesId } from "../helper";
 import { CheckBoxGroup } from "./CheckBoxGroup";
 import { SelectOptions } from "./SelectOptions";
@@ -26,6 +28,7 @@ const initialForm = {
 
 export const FormMaterialOne = () => {
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
+     const { getStudyMaterials } = useContext(DataContext);
      const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
      const [files, setFiles] = useState({});
 
@@ -86,6 +89,7 @@ export const FormMaterialOne = () => {
                setCourseSelected([]);
                setFiles({});
                handleSnackbar();
+               getStudyMaterials();
                e.target.reset();
                return;
           }
@@ -94,7 +98,12 @@ export const FormMaterialOne = () => {
           <>
                <Box
                     component={"form"}
-                    sx={{ width: "100%", pb: 10 }}
+                    sx={{
+                         width: "100%",
+                         pb: 10,
+                         overflow: "hidden",
+                         position: "relative",
+                    }}
                     onSubmit={handleSubmit}
                >
                     <Grid container>

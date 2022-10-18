@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { ModuleCheck } from "./ModuleCheck";
 
 export const CheckBoxGroup = ({ modules, modulesSelected, handleModule }) => {
@@ -9,10 +9,7 @@ export const CheckBoxGroup = ({ modules, modulesSelected, handleModule }) => {
                </Typography>
                {modules.map((module, i) => (
                     <div key={i}>
-                         <Typography
-                              fontWeight={600}
-                              sx={{mt: 2}}
-                         >
+                         <Typography fontWeight={600} sx={{ mt: 2 }}>
                               {module.courseName[0]}
                          </Typography>
                          <ModuleCheck
