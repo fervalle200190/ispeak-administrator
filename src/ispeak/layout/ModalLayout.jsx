@@ -22,3 +22,5 @@ export const ModalLayout = ({ children, width }) => {
           </Modal>
      );
 };
+
+export default ModalLayout
