@@ -15,8 +15,12 @@ export const AuthProvider = ({ children }) => {
      const handleLogin = () => {
           dispatch({ type: authTypes.login });
      };
+
+     const handleLogout = ()=> {
+          dispatch({ type: authTypes.logout });
+     }
      return (
-          <AuthContext.Provider value={{ logged: state.logged, handleLogin }}>
+          <AuthContext.Provider value={{ logged: state.logged, handleLogin, handleLogout }}>
                {children}
           </AuthContext.Provider>
      );

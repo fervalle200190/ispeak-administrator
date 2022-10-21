@@ -7,8 +7,14 @@ export const postLogin = async ({ email, password }) => {
                password,
           });
           let res = await ispeakAPI.post(`/User/Login/1234`, dataToSend);
-          return res;
+          return {
+               ...res,
+               ok: true
+          }
      } catch (error) {
-          return error
+          return {
+               ok: false,
+               error: error.response.data.message
+          }
      }
 };

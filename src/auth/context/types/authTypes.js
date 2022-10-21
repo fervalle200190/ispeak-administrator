@@ -1,3 +1,4 @@
 export const authTypes = {
-    login: 'login'
+    login: 'login',
+    logout: 'logout'
 }

@@ -78,6 +78,6 @@ export const sideNavItems = [
      {
           title: "Cerrar Sesión",
           icon: <MeetingRoomRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/login'
+          url: '/login',
      },
 ];

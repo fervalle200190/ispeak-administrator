@@ -2,14 +2,23 @@ import { ListItem, ListItemButton } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { SideBarContext } from "../context";
+import { AuthContext } from "../../auth/context";
 
-export const SideBarItem = ({ title, icon, url = '' }) => {
+export const SideBarItem = ({ title, icon, url = "" }) => {
      const { isBarExtended } = useContext(SideBarContext);
+     const { handleLogout } = useContext(AuthContext);
+
+     const logout = () => {
+          if(url !== '/login') return
+          localStorage.removeItem("LoggedUser");
+          handleLogout()
+     };
      return (
           <NavLink
                className={({ isActive }) => (isActive ? "link-active" : "")}
                style={{ textDecoration: "none" }}
                to={url}
+               onClick={logout}
           >
                <ListItem
                     sx={{

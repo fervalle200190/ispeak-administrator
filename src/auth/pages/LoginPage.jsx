@@ -13,21 +13,17 @@ export const LoginPage = () => {
                email: formState.email,
                password: formState.password,
           });
-          if(res.response.data.message) {
-               return alert(res.response.data.message)
+          console.log(res)
+          if (!res.ok) {
+               return alert(res.error);
           }
           if (res.status === 200) {
                handleLogin();
-               localStorage.setItem('LoggedUser', JSON.stringify(res.data))
+               localStorage.setItem("LoggedUser", JSON.stringify(res.data));
           }
      };
      return (
-          <Grid
-               container
-               justifyContent={"center"}
-               alignItems="center"
-               minHeight={"100vh"}
-          >
+          <Grid container justifyContent={"center"} alignItems="center" minHeight={"100vh"}>
                <Grid
                     item
                     xs={10}
