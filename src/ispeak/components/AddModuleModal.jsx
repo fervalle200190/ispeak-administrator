@@ -2,9 +2,8 @@ import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import { useForm } from "../../hooks";
 import { postModules } from "../../utils";
-import { CourseContext, DataContext } from "../context";
+import { CourseContext } from "../context";
 import { ModalLayout } from "../layout/modalLayout";
-import { CheckboxCont } from "./CheckboxCont";
 import { SelectOptions } from "./SelectOptions";
 
 const initialForm = {
