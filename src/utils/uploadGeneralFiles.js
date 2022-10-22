@@ -1,5 +1,7 @@
 import axios from "axios";
-import { id, url } from "./IspeakAPI";
+import { url } from "./IspeakAPI";
+
+const id = JSON.parse(localStorage.getItem("LoggedUser")).id
 
 export const uploadGeneralFiles = async (file) => {
      let formData = new FormData();

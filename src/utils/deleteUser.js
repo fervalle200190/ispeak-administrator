@@ -1,4 +1,6 @@
-import { id, ispeakAPI } from "./IspeakAPI";
+import { ispeakAPI } from "./IspeakAPI";
+
+const id = JSON.parse(localStorage.getItem("LoggedUser")).id
 
 export const deleteUser = async (userId) => {
      const { data } = await ispeakAPI.delete(

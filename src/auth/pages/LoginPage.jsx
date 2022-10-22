@@ -13,7 +13,6 @@ export const LoginPage = () => {
                email: formState.email,
                password: formState.password,
           });
-          console.log(res)
           if (!res.ok) {
                return alert(res.error);
           }

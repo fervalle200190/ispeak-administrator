@@ -1,4 +1,6 @@
-import { id, ispeakAPI } from "./IspeakAPI";
+import { ispeakAPI } from "./IspeakAPI";
+
+const id = JSON.parse(localStorage.getItem("LoggedUser")).id
 
 export const updateFiles = async (fileModel, dataMaterial) => {
      const res = await ispeakAPI.put(
