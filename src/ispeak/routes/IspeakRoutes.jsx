@@ -2,6 +2,7 @@ import { Route, Navigate, Routes } from "react-router-dom";
 import { DataProvider, ModalProvider } from "../context";
 import { IspeakLayout } from "../layout/IspeakLayout";
 import {
+     AddAdminPage,
      AddCoursesPage,
      AddProfessorPage,
      AddProgramsPage,
@@ -48,6 +49,7 @@ export const IspeakRoutes = () => {
                               <Route path='sign-ondemand/ingresar' element={<AddSignUpOnDemandPage />} />
                               <Route path='attendance' element={<AttendsPage />} />
                               <Route path='administrators' element={<AdministratorPage />} />
+                              <Route path='administrators/ingresar' element={<AddAdminPage />} />
                               <Route path="/*" element={<Navigate to="/" />} />
                          </Routes>
                     </IspeakLayout>

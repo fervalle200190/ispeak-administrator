@@ -1,6 +1,4 @@
-import { ispeakAPI } from "./IspeakAPI";
-
-const id = JSON.parse(localStorage.getItem("LoggedUser")).id
+import { ispeakAPI, id } from "./IspeakAPI";
 
 export const postFileSupport = async (materialFile) => {
      const { data } = await ispeakAPI.post(

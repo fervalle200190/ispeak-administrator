@@ -1,6 +1,6 @@
 import { Alert, Snackbar } from "@mui/material";
 
-export const SnackBarComponent = ({isSnackBarOpen, handleSnackbar, message = ''}) => {
+export const SnackBarComponent = ({isSnackBarOpen, handleSnackbar, message = '', severity = 'success'}) => {
      return (
           <Snackbar
                open={isSnackBarOpen}
@@ -10,7 +10,7 @@ export const SnackBarComponent = ({isSnackBarOpen, handleSnackbar, message = ''}
           >
                <Alert
                     onClose={handleSnackbar}
-                    severity="success"
+                    severity={severity}
                     sx={{ width: "100%" }}
                >
                     {message}

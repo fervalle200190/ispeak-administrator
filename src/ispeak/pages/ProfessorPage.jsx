@@ -26,7 +26,7 @@ export const ProfessorPage = () => {
      return (
           <>
                <ModalAction
-                    isModalOpen={isModalOpen}
+                    isModalOpen={isModalOpen} 
                     handleModal={handleModal}
                     handleAction={handleDelete}
                     title="¿Estas seguro de eliminar este profesor?"

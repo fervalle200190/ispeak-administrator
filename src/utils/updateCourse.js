@@ -1,6 +1,4 @@
-import { ispeakAPI } from "./IspeakAPI";
-
-const id = JSON.parse(localStorage.getItem("LoggedUser")).id
+import { ispeakAPI, id } from "./IspeakAPI";
 
 export const updateCourse = async (course) => {
      const { data } = await ispeakAPI.put(`/Cursos/Update/1234/${id}`, course);

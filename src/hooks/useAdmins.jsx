@@ -1,3 +1,5 @@
+import { DeleteData } from "../ispeak/components";
+
 export const useAdmins = (admins) => {
      const columns = [
           { field: "id", headerName: "Código", width: 150, editable: true },
@@ -15,6 +17,17 @@ export const useAdmins = (admins) => {
                headerName: "Bloqueado",
                width: 150,
                editable: true,
+          },
+          {
+               field: "actions",
+               headerName: "",
+               sortable: false,
+               editable: false,
+               disableClickEventBubbling: true,
+               disableColumnMenu: true,
+               renderCell: (params) => {
+                    return <DeleteData id={params.row.id} />;
+               },
           },
      ];
      const rows = admins.map((admin) => ({

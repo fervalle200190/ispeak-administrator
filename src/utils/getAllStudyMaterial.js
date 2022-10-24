@@ -1,6 +1,4 @@
-import { ispeakAPI } from "./IspeakAPI";
-
-const id = JSON.parse(localStorage.getItem("LoggedUser")).id
+import { ispeakAPI, id } from "./IspeakAPI";
 
 export const getAllStudyMaterial = async () => {
      const { data } = await ispeakAPI.get(`/MaterialEstudios/GetAll/${id}`);

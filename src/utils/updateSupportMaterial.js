@@ -1,6 +1,4 @@
-import { ispeakAPI } from "./IspeakAPI";
-
-const id = JSON.parse(localStorage.getItem("LoggedUser")).id
+import { ispeakAPI, id } from "./IspeakAPI";
 
 export const updateSupportMaterial = async (material) => {
      const res = await ispeakAPI.put(`/MaterialRefuerzo/Update/1234/${id}`, material);

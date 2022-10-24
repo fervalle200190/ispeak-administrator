@@ -14,6 +14,7 @@ import {
      useAdmins,
      useChangeDataPrograms,
      useChangeData,
+     useChangeDataAdmin,
 } from "../../hooks";
 import {
      getAllAdmin,
@@ -112,6 +113,8 @@ export const DataProvider = ({ children }) => {
                setProfessors,
                professors,
           });
+     
+     const { addAdmin, deleteAdmin, updateAdmin } = useChangeDataAdmin(admin, setAdmin)
 
      const { updatePrograms, deletePrograms, addPrograms } = useChangeDataPrograms({setPrograms, programs})
 
@@ -150,6 +153,9 @@ export const DataProvider = ({ children }) => {
                     deletePrograms,
                     addPrograms,
                     courses,
+                    updateAdmin,
+                    addAdmin,
+                    deleteAdmin,
                     coursesRaw,
                     studyMaterial,
                     supportMaterial,

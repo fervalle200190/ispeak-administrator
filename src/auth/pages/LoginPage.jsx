@@ -1,12 +1,17 @@
 import { Button, Grid, TextField } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "../../hooks/useForm";
+import { SnackBarComponent } from "../../ispeak/components";
 import { postLogin } from "../../utils";
 import { AuthContext } from "../context";
 
 export const LoginPage = () => {
      const { formState, onInputChange } = useForm({ email: "", password: "" });
      const { handleLogin } = useContext(AuthContext);
+     const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+     const handleSnackbar = () => {
+          setIsSnackbarOpen(!isSnackbarOpen);
+     };
      const call = async (e) => {
           e.preventDefault();
           const res = await postLogin({
@@ -16,9 +21,13 @@ export const LoginPage = () => {
           if (!res.ok) {
                return alert(res.error);
           }
+          if (res.data.rol !== "Administrador") {
+               handleSnackbar();
+               return;
+          }
           if (res.status === 200) {
-               handleLogin();
                localStorage.setItem("LoggedUser", JSON.stringify(res.data));
+               window.location.reload();
           }
      };
      return (
@@ -69,6 +78,12 @@ export const LoginPage = () => {
                          </Button>
                     </form>
                </Grid>
+               <SnackBarComponent
+                    isSnackBarOpen={isSnackbarOpen}
+                    handleSnackbar={handleSnackbar}
+                    message="no tienes los permisos necesarios para acceder"
+                    severity="error"
+               />
           </Grid>
      );
 };
