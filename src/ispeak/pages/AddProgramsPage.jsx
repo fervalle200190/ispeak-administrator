@@ -1,12 +1,7 @@
 import { Box, FormControl, Grid, TextField, Button } from "@mui/material";
 import { useContext, useState } from "react";
 import { useForm, useGetAllCoursesCombo } from "../../hooks";
-import {
-     CheckboxCont,
-     CoursesList,
-     PageHeader,
-     SnackBarComponent,
-} from "../components";
+import { CheckboxCont, CoursesList, PageHeader, SnackBarComponent } from "../components";
 import { DataContext } from "../context";
 import { processPrograms } from "../helper";
 
@@ -16,18 +11,32 @@ const initialForm = {
      activo: false,
 };
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El Programa ha sido creado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const AddProgramsPage = () => {
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
      const { addPrograms } = useContext(DataContext);
      const [checked, setChecked] = useState([]);
      const { coursesCombo } = useGetAllCoursesCombo();
-     const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
      const [active, setActive] = useState(false);
 
-     const handleSnackbar = () => {
-          setIsSnackBarOpen(!isSnackBarOpen);
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
      };
-
      const handleActive = () => {
           setActive(!active);
      };
@@ -47,7 +56,8 @@ export const AddProgramsPage = () => {
 
      const handleSubmit = async (e) => {
           e.preventDefault();
-          if (formState.nombre === "" || formState.descripcion === "") {
+          if (formState.nombre === "" || formState.descripcion === "" || checked.length <= 0) {
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
           const dataToSend = {
@@ -56,23 +66,22 @@ export const AddProgramsPage = () => {
                id: 0,
           };
           const res = await processPrograms(dataToSend, checked, coursesCombo);
-          if (res.id) {
-               onResetForm();
-               setChecked([]);
-               handleSnackbar();
-               addPrograms(res);
-               setActive(false)
+          if (!res.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               return;
           }
+          onResetForm();
+          setChecked([]);
+          setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          addPrograms(res.program);
+          setActive(false);
      };
 
      return (
           <>
                <PageHeader title="Agregar Programa" />
                <Box component={"form"} sx={{ pb: 8 }} onSubmit={handleSubmit}>
-                    <FormControl
-                         sx={{ width: "100%" }}
-                         onChange={onInputChange}
-                    >
+                    <FormControl sx={{ width: "100%" }} onChange={onInputChange}>
                          <Grid container>
                               <Grid item xs={12} sm={7} sx={{ m: 1 }}>
                                    <TextField
@@ -108,7 +117,7 @@ export const AddProgramsPage = () => {
                          </Grid>
                     </FormControl>
                     <Grid container>
-                         <CoursesList 
+                         <CoursesList
                               handleCheck={handleCheck}
                               checked={checked}
                               coursesCombo={coursesCombo}
@@ -118,11 +127,7 @@ export const AddProgramsPage = () => {
                          Guardar
                     </Button>
                </Box>
-               <SnackBarComponent
-                    isSnackBarOpen={isSnackBarOpen}
-                    handleSnackbar={handleSnackbar}
-                    message="El programa ha sido creado exitosamente!!"
-               />
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </>
      );
 };

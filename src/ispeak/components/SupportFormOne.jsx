@@ -7,13 +7,29 @@ import { kindOfSupport } from "../utils";
 import { SelectOptions } from "./SelectOptions";
 import { SnackBarComponent } from "./SnackBarComponent";
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El Material de refuerzo ha sido creado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const SupportFormOne = () => {
-     const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const { getSupportMaterials } = useContext(DataContext);
 
-     const handleSnackbar = () => {
-          setIsSnackBarOpen(!isSnackBarOpen);
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
      };
+
      const {
           courseSelected,
           coursesList,
@@ -26,6 +42,7 @@ export const SupportFormOne = () => {
      const handleSubmit = async (e) => {
           e.preventDefault();
           if (courseSelected === "" || kindOfSupportSelected === "") {
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
           const success = []
@@ -38,15 +55,17 @@ export const SupportFormOne = () => {
                const res = await postSupportMaterial(
                     JSON.stringify(dataToSend)
                );
-               if(res.id !== 0) {
+               if(res.ok) {
                     success.push(true)
                }
           }
-          if (success[0]) {
-               resetSelected();
-               handleSnackbar();
-               getSupportMaterials();
+          if (!success[0]) {
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               return
           }
+               resetSelected();
+               setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+               getSupportMaterials();
      };
      return (
           <Box component="form" onSubmit={handleSubmit}>
@@ -74,11 +93,7 @@ export const SupportFormOne = () => {
                          </Button>
                     </Grid>
                </Grid>
-               <SnackBarComponent
-                    handleSnackbar={handleSnackbar}
-                    isSnackBarOpen={isSnackBarOpen}
-                    message="El Material ha sido creado exitosamente!!"
-               />
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </Box>
      );
 };

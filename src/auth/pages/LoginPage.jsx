@@ -54,6 +54,9 @@ export const LoginPage = () => {
                                         onChange={onInputChange}
                                         variant="filled"
                                         fullWidth
+                                        InputLabelProps={{
+                                             className: "textfield-label",
+                                        }}
                                    />
                               </Grid>
                               <Grid item>
@@ -66,6 +69,9 @@ export const LoginPage = () => {
                                         onChange={onInputChange}
                                         variant="filled"
                                         fullWidth
+                                        InputLabelProps={{
+                                             className: "textfield-label",
+                                        }}
                                    />
                               </Grid>
                          </Grid>

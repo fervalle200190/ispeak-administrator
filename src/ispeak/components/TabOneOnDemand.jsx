@@ -10,15 +10,30 @@ const initialForm = {
      nombre: "",
 };
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El Curso ha sido creado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const TabOneOnDemand = () => {
      const [professorsList, setProfessorsList] = useState([]);
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
      const [professorSelected, setProfessorSelected] = useState("");
      const { professors, coursesChangers } = useContext(DataContext);
-     const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
 
-     const handleSnackbar = () => {
-          setIsSnackBarOpen(!isSnackBarOpen);
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
      };
 
      const handleProfessor = (e) => {
@@ -26,8 +41,9 @@ export const TabOneOnDemand = () => {
      };
 
      const handleSubmit = async (e) => {
-          e.preventDefault()
-          if (formState.nombre === "") {
+          e.preventDefault();
+          if (formState.nombre === "" || professorSelected === '') {
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
           const dataToSend = {
@@ -35,19 +51,21 @@ export const TabOneOnDemand = () => {
                nombre: formState.nombre,
                duracion: 0,
                fechaCreacion: new Date().toISOString(),
-               activo: 'true',
+               activo: "true",
                planEstudio: "",
                unidadNegocioId: "4",
                profesorId: "",
                // profesorId: professorSelected,
           };
           const res = await postCourse(JSON.stringify(dataToSend));
-          if(res.nombre) {
-               onResetForm()
-               setProfessorSelected("")
-               handleSnackbar()
-               coursesChangers.addData(res)
+          if (!res.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               return;
           }
+          onResetForm();
+          setProfessorSelected("");
+          setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          coursesChangers.addData(res.data);
      };
 
      useEffect(() => {
@@ -83,19 +101,10 @@ export const TabOneOnDemand = () => {
                          />
                     </Grid>
                </Grid>
-               <Button
-                    variant="outlined"
-                    type="submit"
-                    size="large"
-                    sx={{ mt: 3 }}
-               >
+               <Button variant="outlined" type="submit" size="large" sx={{ mt: 3 }}>
                     Agregar
                </Button>
-               <SnackBarComponent
-                    handleSnackbar={handleSnackbar}
-                    isSnackBarOpen={isSnackBarOpen}
-                    message="El curso ha sido creado exitosamente!!"
-               />
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </Box>
      );
 };

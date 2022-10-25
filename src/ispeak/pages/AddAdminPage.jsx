@@ -15,15 +15,30 @@ const initialForm = {
      direccionCompleta: "",
 };
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El Profesor ha sido creado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const AddAdminPage = () => {
-     const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const { addAdmin } = useContext(DataContext);
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
      const { genre, handleGenre, country, handleCountry, blocked, handleCheck, resetUse } =
           useAddProfessor();
 
-     const handleSnackbar = () => {
-          setIsSnackBarOpen(!isSnackBarOpen);
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
      };
 
      const handleSubmit = async (e) => {
@@ -32,8 +47,9 @@ export const AddAdminPage = () => {
                formState.nombre === "" ||
                formState.email === "" ||
                formState.telefono === "" ||
-               formState.password === "" 
+               formState.password === ""
           ) {
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
           const userToSend = {
@@ -49,12 +65,14 @@ export const AddAdminPage = () => {
                fechaCreacion: new Date().toISOString(),
           };
           const res = await postUser(JSON.stringify(userToSend));
-          if (res.activo) {
-               handleSnackbar();
-               onResetForm();
-               resetUse();
-               addAdmin(res);
+          if (res.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               return;
           }
+          setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          onResetForm();
+          resetUse();
+          addAdmin(res.data);
      };
      return (
           <>
@@ -147,11 +165,7 @@ export const AddAdminPage = () => {
                          </Button>
                     </Box>
                </Grid>
-               <SnackBarComponent
-                    handleSnackbar={handleSnackbar}
-                    isSnackBarOpen={isSnackBarOpen}
-                    message="El Administrador ha sido creado exitosamente!!"
-               />
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </>
      );
 };

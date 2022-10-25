@@ -32,7 +32,7 @@ export const TabsContainer = ({ businessUnit }) => {
                               </Tabs>
                          </Box>
                          <TabPanel value={value} index={0}>
-                              <TabOne businessUnit={businessUnit} />
+                              <TabOne businessUnit={businessUnit} /> 
                          </TabPanel>
                          <TabPanel value={value} index={1}>
                               <TabTwo />

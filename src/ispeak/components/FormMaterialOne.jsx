@@ -10,11 +10,7 @@ import {
 import { useContext } from "react";
 import { useMemo, useState } from "react";
 import { useAddStudyMaterials, useForm } from "../../hooks";
-import {
-     postStudyMaterial,
-     updateFiles,
-     uploadGeneralFiles,
-} from "../../utils";
+import { postStudyMaterial, updateFiles, uploadGeneralFiles } from "../../utils";
 import { DataContext } from "../context";
 import { newModules, processModulesId } from "../helper";
 import { CheckBoxGroup } from "./CheckBoxGroup";
@@ -26,14 +22,32 @@ const initialForm = {
      linkVideo: "",
 };
 
+const initialFiles = {};
+
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El Material ha sido creado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const FormMaterialOne = () => {
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
      const { getStudyMaterials } = useContext(DataContext);
-     const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
-     const [files, setFiles] = useState({});
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
+     const [isLoading, setIsLoading] = useState(false);
+     const [files, setFiles] = useState(initialFiles);
 
-     const handleSnackbar = () => {
-          setIsSnackBarOpen(!isSnackBarOpen);
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
      };
 
      const handleFiles = (e) => {
@@ -58,7 +72,8 @@ export const FormMaterialOne = () => {
 
      const handleSubmit = async (e) => {
           e.preventDefault();
-          if (formState.nombre === "" || formState.linkVideo === "") {
+          if (formState.nombre === "" || formState.linkVideo === "" || files === initialFiles) {
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
           const dataToSend = {
@@ -77,22 +92,31 @@ export const FormMaterialOne = () => {
                },
                ModuloId: processModulesId(modulesSelected),
           };
+          setIsLoading(true);
           const studyMaterial = await postStudyMaterial(dataToSend);
           const name = await uploadGeneralFiles(files[`ImagenPreview`]);
+          if (!name.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: name.errorMessage });
+               setIsLoading(false);
+               return;
+          }
           const fileWith = {
-               fileName: name,
+               fileName: name.data,
                Ids: studyMaterial,
           };
           const res = await updateFiles("ImagenPreview", fileWith);
-          if (res.statusText === "OK") {
-               onResetForm();
-               setCourseSelected([]);
-               setFiles({});
-               handleSnackbar();
-               getStudyMaterials();
-               e.target.reset();
+          if (!res.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               setIsLoading(false);
                return;
           }
+          onResetForm();
+          setIsLoading(false);
+          setCourseSelected([]);
+          setFiles({});
+          setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          getStudyMaterials();
+          e.target.reset();
      };
      return (
           <>
@@ -121,11 +145,7 @@ export const FormMaterialOne = () => {
                          </Grid>
                          <Grid item xs={12} sm={8} sx={{ m: 1 }}>
                               <SelectOptions
-                                   options={
-                                        coursesList === undefined
-                                             ? []
-                                             : coursesList
-                                   }
+                                   options={coursesList === undefined ? [] : coursesList}
                                    label="Cursos"
                                    value={courseSelected}
                                    multiple={true}
@@ -182,17 +202,14 @@ export const FormMaterialOne = () => {
                                    size={"large"}
                                    type="submit"
                                    variant="outlined"
+                                   disabled={isLoading}
                               >
                                    Guardar
                               </Button>
                          </Grid>
                     </Grid>
                </Box>
-               <SnackBarComponent
-                    handleSnackbar={handleSnackbar}
-                    isSnackBarOpen={isSnackBarOpen}
-                    message="El material de estudio ha sido creado correctamente!!"
-               />
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </>
      );
 };

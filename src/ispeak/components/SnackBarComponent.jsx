@@ -5,7 +5,7 @@ export const SnackBarComponent = ({isSnackBarOpen, handleSnackbar, message = '',
           <Snackbar
                open={isSnackBarOpen}
                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-               autoHideDuration={6000}
+               autoHideDuration={3000}
                onClose={handleSnackbar}
           >
                <Alert

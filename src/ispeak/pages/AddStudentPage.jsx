@@ -2,12 +2,7 @@ import { Button, Grid, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import { useAddStudents, useForm } from "../../hooks";
 import { postUser } from "../../utils";
-import {
-     CheckboxCont,
-     PageHeader,
-     SelectOptions,
-     SnackBarComponent,
-} from "../components";
+import { CheckboxCont, PageHeader, SelectOptions, SnackBarComponent } from "../components";
 import { DataContext } from "../context";
 import { genreRatio, countriesRatio } from "../utils";
 
@@ -21,22 +16,30 @@ const initialForm = {
      direccionCompleta: "",
 };
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: 'success',
+     message: 'El alumno ha sido creado exitosamente!!'
+}
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: 'error',
+     message: 'Ha ocurrido un error'
+}
+
 export const AddStudentPage = () => {
-     const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const { addStudent } = useContext(DataContext);
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
-     const {
-          genre,
-          handleGenre,
-          country,
-          handleCountry,
-          blocked,
-          handleCheck,
-          resetUse,
-     } = useAddStudents();
+     const { genre, handleGenre, country, handleCountry, blocked, handleCheck, resetUse } =
+          useAddStudents();
 
-     const handleSnackbar = () => {
-          setIsSnackBarOpen(!isSnackBarOpen);
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false
+          });
      };
 
      const handleSubmit = async (e) => {
@@ -46,10 +49,9 @@ export const AddStudentPage = () => {
                formState.email === "" ||
                formState.telefono === "" ||
                formState.password === "" ||
-               formState.ciudad === "" ||
-               formState.ocupacion === "" ||
-               formState.direccionCompleta === ""
+               formState.ocupacion === ""
           ) {
+               setSnackBarInfo({...errorSnackbar, message: 'Por favor completa los datos'})
                return;
           }
           const userToSend = {
@@ -64,22 +66,20 @@ export const AddStudentPage = () => {
                fechaCreacion: new Date().toISOString(),
           };
           const res = await postUser(JSON.stringify(userToSend));
-          if (res.activo) {
-               handleSnackbar();
-               onResetForm();
-               resetUse();
-               addStudent(res);
+          if (!res.ok) {
+               setSnackBarInfo({...errorSnackbar, message: res.errorMessage})
+               return;
           }
+          setSnackBarInfo({...initialSnackBar, isSnackBarOpen: true})
+          onResetForm();
+          resetUse();
+          addStudent(res.data);
      };
      return (
           <>
                <PageHeader title={"Alta de Alumnos"} />
                <form onSubmit={handleSubmit} autoComplete="off">
-                    <Grid
-                         container
-                         justifyContent={"center"}
-                         alignItems="flex-start"
-                    >
+                    <Grid container justifyContent={"center"} alignItems="flex-start">
                          <Grid item xs={12} sm={6}>
                               <Grid item xs={12} sx={{ m: 1 }}>
                                    <TextField
@@ -141,21 +141,6 @@ export const AddStudentPage = () => {
                                         }}
                                    />
                               </Grid>
-                              <Grid item xs={12} sx={{ m: 1 }}>
-                                   <TextField
-                                        type={"text"}
-                                        label="Ciudad"
-                                        fullWidth
-                                        variant="outlined"
-                                        name="ciudad"
-                                        value={formState.ciudad}
-                                        onChange={onInputChange}
-                                        placeholder="Ciudad"
-                                        InputLabelProps={{
-                                             className: "textfield-label",
-                                        }}
-                                   />
-                              </Grid>
                          </Grid>
                          <Grid item xs={12} sm={6}>
                               <Grid item xs={12} sx={{ m: 1 }}>
@@ -182,21 +167,6 @@ export const AddStudentPage = () => {
                                    />
                               </Grid>
                               <Grid item xs={12} sx={{ m: 1 }}>
-                                   <TextField
-                                        type={"text"}
-                                        fullWidth
-                                        label={"Dirección"}
-                                        placeholder="Dirección"
-                                        variant="outlined"
-                                        name="direccionCompleta"
-                                        value={formState.direccionCompleta}
-                                        onChange={onInputChange}
-                                        InputLabelProps={{
-                                             className: "textfield-label",
-                                        }}
-                                   />
-                              </Grid>
-                              <Grid item xs={12} sx={{ m: 1 }}>
                                    <SelectOptions
                                         options={countriesRatio}
                                         label={"País"}
@@ -213,19 +183,13 @@ export const AddStudentPage = () => {
                               </Grid>
                          </Grid>
                     </Grid>
-                    <Button
-                         size="large"
-                         variant="outlined"
-                         type="submit"
-                         sx={{ m: 1 }}
-                    >
+                    <Button size="large" variant="outlined" type="submit" sx={{ m: 1 }}>
                          Enviar
                     </Button>
                </form>
                <SnackBarComponent
-                    handleSnackbar={handleSnackbar}
-                    isSnackBarOpen={isSnackBarOpen}
-                    message='El alumno ha sido creado exitosamente!!'
+                    handleSnackbar={closeSnackbar}
+                    {...snackBarInfo}
                />
           </>
      );

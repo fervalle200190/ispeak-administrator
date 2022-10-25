@@ -2,7 +2,7 @@ import { Box, Button, FormLabel, Grid, TextField, Typography } from "@mui/materi
 import { useCoursesByBusinessList } from "../../hooks";
 import { SelectOptions } from "./SelectOptions";
 
-export const SignUpForm = () => {
+export const SignUpForm = () => { 
      const { courses, courseSelected, handleCourse } =
           useCoursesByBusinessList(2);
      return (

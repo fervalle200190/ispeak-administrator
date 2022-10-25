@@ -11,17 +11,33 @@ const initialForm = {
      duracion: "",
 };
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El Curso ha sido creado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const TabOne = ({ businessUnit }) => {
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
-     const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
-     const { coursesChangers } = useContext(DataContext)
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
+     const { coursesChangers } = useContext(DataContext);
 
-     const handleSnackbar = () => {
-          setIsSnackBarOpen(!isSnackBarOpen);
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
      };
      const handleSubmit = async (e) => {
           e.preventDefault();
           if (formState.nombre === "" || formState.duracion === "") {
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
           const dataToSend = {
@@ -36,11 +52,13 @@ export const TabOne = ({ businessUnit }) => {
                // profesorId: professorSelected,
           };
           const res = await postCourse(JSON.stringify(dataToSend));
-          if(res.nombre) {
-               onResetForm()
-               handleSnackbar()
-               coursesChangers.addData(res)
+          if (!res.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               return;
           }
+          onResetForm();
+          setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          coursesChangers.addData(res);
      };
      return (
           <Box component="form" sx={{ width: "100%" }} onSubmit={handleSubmit}>
@@ -75,11 +93,7 @@ export const TabOne = ({ businessUnit }) => {
                          </Button>
                     </Grid>
                </Grid>
-               <SnackBarComponent
-                    handleSnackbar={handleSnackbar}
-                    isSnackBarOpen={isSnackBarOpen}
-                    message="El curso ha sido creado exitosamente!!"
-               />
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </Box>
      );
 };

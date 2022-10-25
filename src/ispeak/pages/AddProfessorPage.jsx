@@ -1,18 +1,8 @@
-import {
-     Box,
-     Button,
-     Grid,
-     TextField,
-} from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import { useAddProfessor, useForm } from "../../hooks";
 import { postUser } from "../../utils";
-import {
-     CheckboxCont,
-     PageHeader,
-     SelectOptions,
-     SnackBarComponent,
-} from "../components";
+import { CheckboxCont, PageHeader, SelectOptions, SnackBarComponent } from "../components";
 import { DataContext } from "../context";
 import { countriesRatio, genreRatio } from "../utils";
 
@@ -25,22 +15,30 @@ const initialForm = {
      direccionCompleta: "",
 };
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El Profesor ha sido creado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const AddProfessorPage = () => {
-     const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const { addProfessor } = useContext(DataContext);
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
-     const {
-          genre,
-          handleGenre,
-          country,
-          handleCountry,
-          blocked,
-          handleCheck,
-          resetUse,
-     } = useAddProfessor();
+     const { genre, handleGenre, country, handleCountry, blocked, handleCheck, resetUse } =
+          useAddProfessor();
 
-     const handleSnackbar = () => {
-          setIsSnackBarOpen(!isSnackBarOpen);
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
      };
 
      const handleSubmit = async (e) => {
@@ -49,10 +47,9 @@ export const AddProfessorPage = () => {
                formState.nombre === "" ||
                formState.email === "" ||
                formState.telefono === "" ||
-               formState.password === "" ||
-               formState.ciudad === "" ||
-               formState.direccionCompleta === ""
+               formState.password === ""
           ) {
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
           const userToSend = {
@@ -68,22 +65,20 @@ export const AddProfessorPage = () => {
                fechaCreacion: new Date().toISOString(),
           };
           const res = await postUser(JSON.stringify(userToSend));
-          if (res.activo) {
-               handleSnackbar();
-               onResetForm();
-               resetUse();
-               addProfessor(res);
+          if (!res.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               return
           }
+          setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          onResetForm();
+          resetUse();
+          addProfessor(res.data);
      };
      return (
           <>
                <PageHeader title={"Gestión de Profesores"} />
                <Grid container>
-                    <Box
-                         component={"form"}
-                         onSubmit={handleSubmit}
-                         sx={{ width: "100%" }}
-                    >
+                    <Box component={"form"} onSubmit={handleSubmit} sx={{ width: "100%" }}>
                          <Grid container>
                               <Grid item xs={12} sm={6}>
                                    <Grid item xs={12} sx={{ m: 1 }}>
@@ -141,37 +136,11 @@ export const AddProfessorPage = () => {
                               </Grid>
                               <Grid item xs={12} sm={6}>
                                    <Grid item xs={12} sx={{ m: 1 }}>
-                                        <TextField
-                                             fullWidth
-                                             variant="outlined"
-                                             label={"Dirección"}
-                                             name="direccionCompleta"
-                                             value={formState.direccionCompleta}
-                                             onChange={onInputChange}
-                                             InputLabelProps={{
-                                                  className: "textfield-label",
-                                             }}
-                                        />
-                                   </Grid>
-                                   <Grid item xs={12} sx={{ m: 1 }}>
                                         <SelectOptions
                                              label={"País"}
                                              options={countriesRatio}
                                              handleSelect={handleCountry}
                                              value={country}
-                                        />
-                                   </Grid>
-                                   <Grid item xs={12} sx={{ m: 1 }}>
-                                        <TextField
-                                             fullWidth
-                                             variant="outlined"
-                                             label={"Ciudad"}
-                                             name="ciudad"
-                                             value={formState.ciudad}
-                                             onChange={onInputChange}
-                                             InputLabelProps={{
-                                                  className: "textfield-label",
-                                             }}
                                         />
                                    </Grid>
                                    <Grid item xs={12} sx={{ m: 1 }}>
@@ -191,20 +160,12 @@ export const AddProfessorPage = () => {
                                    label={"Bloqueado"}
                               />
                          </Grid>
-                         <Button
-                              type="submit"
-                              variant="outlined"
-                              sx={{ ml: 1 }}
-                         >
+                         <Button type="submit" variant="outlined" sx={{ ml: 1 }}>
                               Guardar
                          </Button>
                     </Box>
-               </Grid>
-               <SnackBarComponent
-                    handleSnackbar={handleSnackbar}
-                    isSnackBarOpen={isSnackBarOpen}
-                    message='El profesor ha sido creado exitosamente!!'
-               />
+               </Grid> 
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </>
      );
 };
