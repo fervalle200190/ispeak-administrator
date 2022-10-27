@@ -5,6 +5,5 @@ export const processModulesId = (modules) => {
                newModules.push(module);
           }
      }
-     console.log(newModules)
      return newModules
 };

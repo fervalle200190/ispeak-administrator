@@ -1,36 +1,63 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import { useContext, useMemo } from "react";
-import { useCourseSelect, useForm } from "../../hooks";
+import { useCourseSelect, useForm, useSignUpForm } from "../../hooks";
 import { postSignUpsOnDemand } from "../../utils";
 import { DataContext } from "../context";
 import { getSignUpToSend } from "../helper";
 import { SelectOptions } from "./SelectOptions";
+import { SnackBarComponent } from "./SnackBarComponent";
+
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El Alumno ha sido inscrito exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
+const initialForm = { observaciones: "" };
 
 export const SignUpFormOnDemand = () => {
-     const { coursesList, courseSelected, handleCourse } = useCourseSelect();
-     const { students } = useContext(DataContext);
-     const { observaciones, onInputChange } = useForm({ observaciones: "" });
-     const [studentSelected, setStudentSelected] = useState("");
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
+     const {
+          studentSelected,
+          programSelected,
+          studentsParsed,
+          programsParsed,
+          onStudentSelectedChange,
+          onProgramSelectedChange,
+          resetSelects
+     } = useSignUpForm("");
+     const { observaciones, onInputChange, onResetForm } = useForm(initialForm);
 
-     const studentsParsed = useMemo(() => {
-          const newData = students.rows.map((student) => {
-               return {
-                    label: student.nameAndLastName,
-                    value: student.id,
-               };
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
           });
-          return newData;
-     }, [students]);
-
-     const onStudentSelectedChange = (e) => {
-          setStudentSelected(e.target.value);
      };
 
      const onSubmit = async (e) => {
           e.preventDefault();
-          const res = await postSignUpsOnDemand(getSignUpToSend({courseSelected, studentSelected, observaciones}));
-          console.log(res)
+          if (studentSelected === "" || programSelected === "" || observaciones === "") {
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
+               return;
+          }
+          const res = await postSignUpsOnDemand(
+               getSignUpToSend({ programSelected, studentSelected, observaciones })
+          );
+          if (!res.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               return;
+          }
+          setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          onResetForm();
+          resetSelects()
      };
      return (
           <Box component="form" onSubmit={onSubmit}>
@@ -39,16 +66,16 @@ export const SignUpFormOnDemand = () => {
                          <SelectOptions
                               options={studentsParsed}
                               label="Alumno"
-                              onChange={onStudentSelectedChange}
+                              handleSelect={onStudentSelectedChange}
                               value={studentSelected}
                          />
                     </Grid>
                     <Grid item xs={12} sm={7}>
                          <SelectOptions
-                              options={coursesList}
-                              value={courseSelected}
-                              handleSelect={handleCourse}
-                              label="Curso"
+                              options={programsParsed}
+                              value={programSelected}
+                              handleSelect={onProgramSelectedChange}
+                              label="Programa"
                          />
                     </Grid>
                     <Grid item xs={12} sm={7}>
@@ -71,6 +98,7 @@ export const SignUpFormOnDemand = () => {
                          </Button>
                     </Grid>
                </Grid>
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </Box>
      );
 };

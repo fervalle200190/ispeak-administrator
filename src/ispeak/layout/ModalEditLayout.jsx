@@ -12,6 +12,8 @@ export const ModalEditLayout = ({ width, isModalOpen, handleModal, children }) =
                          left: "50%",
                          transform: "translate(-50%,-50%)",
                          backgroundColor: "#fff",
+                         overflowY: 'auto',
+                         maxHeight: '500px',
                     }}
                >
                     {children}

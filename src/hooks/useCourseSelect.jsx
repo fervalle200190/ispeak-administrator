@@ -6,7 +6,11 @@ export const useCourseSelect = () => {
      const [courseSelected, setCourseSelected] = useState("");
 
      const handleCourse = (e) => {
-          setCourseSelected(e.target.value); 
+          setCourseSelected(e.target.value);
+     };
+
+     const resetCourse = () => {
+          setCourseSelected("");
      };
 
      const coursesList = useMemo(() => {
@@ -22,5 +26,6 @@ export const useCourseSelect = () => {
           courseSelected,
           handleCourse,
           coursesList,
+          resetCourse,
      };
 };

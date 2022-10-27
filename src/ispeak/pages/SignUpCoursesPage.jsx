@@ -1,10 +1,21 @@
 import { Box } from "@mui/material";
-import { useContext } from "react";
-import { Datagrid, PageHeader } from "../components";
+import { useContext, useState } from "react";
+import { PageHeader, EditSignUpModal, DataGridWithModal } from "../components";
 import { DataContext } from "../context";
 
 export const SignUpCoursesPage = () => {
      const { signUp } = useContext(DataContext);
+     const [isModalOpen, setIsModalOpen] = useState(false);
+     const [onEditId, setOnEditId] = useState("");
+
+     const closeModal = () => {
+          setIsModalOpen(false);
+     };
+
+     const openModal = ({ id }) => {
+          setIsModalOpen(true);
+          setOnEditId(id);
+     };
      return (
           <>
                <PageHeader
@@ -13,8 +24,13 @@ export const SignUpCoursesPage = () => {
                     url="/sign-courses/ingresar"
                />
                <Box height={"100vh"} sx={{ pr: 2 }}>
-                    <Datagrid columns={signUp.columns} rows={signUp.rows} />
+                    <DataGridWithModal
+                         columns={signUp.columns}
+                         rows={signUp.rows}
+                         handleCell={openModal}
+                    />
                </Box>
+               <EditSignUpModal isModalOpen={isModalOpen} handleModal={closeModal} id={onEditId} />
           </>
      );
 };

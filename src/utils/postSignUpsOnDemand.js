@@ -1,8 +1,8 @@
 import { id, ispeakAPI } from "./IspeakAPI";
 
-export const postSignUpsOnDemand = async () => {
+export const postSignUpsOnDemand = async (signUp) => {
      try {
-          const { data } = await ispeakAPI(`/InscripcionesOnDemand/Create/1234/${id}`);
+          const { data } = await ispeakAPI.post(`/InscripcionesOnDemand/Create/1234/${id}`, signUp);
           return {
                ok: true,
                data,
@@ -10,7 +10,7 @@ export const postSignUpsOnDemand = async () => {
      } catch (error) {
           return {
                ok: false,
-               errorMessage: "Ha ocurrido un problema",
+               errorMessage: error.response.data || "Ha ocurrido un problema",
           };
      }
 };

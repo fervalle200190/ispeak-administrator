@@ -1,12 +1,4 @@
-import {
-     Box,
-     Button,
-     FormControlLabel,
-     Grid,
-     OutlinedInput,
-     TextField,
-     Typography,
-} from "@mui/material";
+import { Box, Button, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
 import { useContext } from "react";
 import { useMemo, useState } from "react";
 import { useAddStudyMaterials, useForm } from "../../hooks";

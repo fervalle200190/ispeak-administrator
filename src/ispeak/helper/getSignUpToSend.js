@@ -1,11 +1,9 @@
-export const getSignUpToSend = ({ courseSelected, studentSelected, observaciones }) => {
+export const getSignUpToSend = ({ programSelected, studentSelected, observaciones, rawInfo }) => {
      return {
-          id: 0,
+          ...rawInfo,
           alumnoId: studentSelected,
-          programaId: courseSelected,
+          programaId: programSelected,
           fechaInscripcion: new Date().toISOString(),
           observaciones,
-          completado: false,
-          activo: true,
      };
 };

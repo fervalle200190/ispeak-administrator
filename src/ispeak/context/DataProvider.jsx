@@ -167,7 +167,8 @@ export const DataProvider = ({ children }) => {
                     studyMaterialsChangers,
                     getStudyMaterials,
                     getSupportMaterials,
-                    supportMaterialsChangers
+                    supportMaterialsChangers,
+                    getSignUps
                }}
           >
                {children}

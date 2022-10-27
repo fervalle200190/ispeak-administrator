@@ -65,7 +65,7 @@ export const AddAdminPage = () => {
                fechaCreacion: new Date().toISOString(),
           };
           const res = await postUser(JSON.stringify(userToSend));
-          if (res.ok) {
+          if (!res.ok) {
                setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
                return;
           }

@@ -31,3 +31,8 @@ export const kindOfMaterial = [
      { label: "PDF", value: "PDF" },
      { label: "Video", value: "Video" },
 ];
+
+export const signUpType = [
+     { label: "Individual", value: "Individual" },
+     { label: "Grupal", value: "Grupal" },
+];
