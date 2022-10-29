@@ -1,13 +1,21 @@
 import { Box } from "@mui/material";
 import { useState } from "react";
 import { useContext } from "react";
-import { Datagrid, DataGridWithModal, EditStudyMaterialModal, PageHeader } from "../components";
-import { DataContext } from "../context";
+import { deleteStudyMaterial } from "../../utils";
+import { Datagrid, DataGridWithModal, EditStudyMaterialModal, ModalAction, PageHeader } from "../components";
+import { DataContext, ModalContext } from "../context";
 
 export const StudyMaterialPage = () => {
-     const { studyMaterial } = useContext(DataContext);
+     const { studyMaterial, studyMaterialsChangers } = useContext(DataContext);
+     const { isModalOpen: isModalDeleteOpen, handleModal, id } = useContext(ModalContext);
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [onEditId, setOnEditId] = useState("");
+
+     const handleDelete = async () => {
+          const { ok } = await deleteStudyMaterial(id)
+          if(!ok) return
+          studyMaterialsChangers.deleteData(id);
+     };
 
      const openModal = ({ id }) => {
           setIsModalOpen(true);
@@ -19,6 +27,12 @@ export const StudyMaterialPage = () => {
      };
      return (
           <>
+               <ModalAction
+                    isModalOpen={isModalDeleteOpen}
+                    handleModal={handleModal}
+                    handleAction={handleDelete}
+                    title="¿Estas seguro de eliminar este material de estudio?"
+               />
                <PageHeader
                     title={"Material Estudio"}
                     buttonTitle="Agregar Material"

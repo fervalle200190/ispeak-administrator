@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { useContext } from "react";
 import { useEditData } from "../../hooks";
-import { getCourseById, updateCourse } from "../../utils";
+import { deleteCourse, getCourseById, updateCourse } from "../../utils";
 import {
      Datagrid,
      ModalAction,
@@ -21,7 +21,7 @@ export const CoursesPage = () => {
           isSnackBarEditOpen,
           handleAnswer,
           handleSnackBar,
-          commitHandler,
+          commitHandler, 
           stopHandler,
           handleCloseModal,
      } = useEditData(
@@ -32,7 +32,9 @@ export const CoursesPage = () => {
           updateCourse
      );
 
-     const handleDelete = () => {
+     const handleDelete = async () => {
+          const { res } = await deleteCourse(id)
+          if(!res) return
           coursesChangers.deleteData(id);
      };
      return (

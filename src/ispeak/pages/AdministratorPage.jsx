@@ -48,7 +48,7 @@ export const AdministratorPage = () => {
                          updateHandler={commitHandler}
                          stopHandler={stopHandler} 
                     />
-               </Box>
+               </Box> 
                <SnackBarComponent
                     isSnackBarOpen={isSnackBarEditOpen}
                     handleSnackbar={handleSnackBar}

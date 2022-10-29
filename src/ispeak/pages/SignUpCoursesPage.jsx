@@ -1,12 +1,20 @@
 import { Box } from "@mui/material";
 import { useContext, useState } from "react";
-import { PageHeader, EditSignUpModal, DataGridWithModal } from "../components";
-import { DataContext } from "../context";
+import { deleteSignUp } from "../../utils";
+import { PageHeader, EditSignUpModal, DataGridWithModal, ModalAction } from "../components";
+import { DataContext, ModalContext } from "../context";
 
 export const SignUpCoursesPage = () => {
-     const { signUp } = useContext(DataContext);
+     const { signUp, signUpsChangers } = useContext(DataContext);
+     const { isModalOpen: isModalDeleteOpen, handleModal, id } = useContext(ModalContext);
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [onEditId, setOnEditId] = useState("");
+
+     const handleDelete = async () => {
+          const { ok } = await deleteSignUp(id);
+          if (!ok) return;
+          signUpsChangers.deleteData(id);
+     };
 
      const closeModal = () => {
           setIsModalOpen(false);
@@ -18,6 +26,12 @@ export const SignUpCoursesPage = () => {
      };
      return (
           <>
+               <ModalAction
+                    isModalOpen={isModalDeleteOpen}
+                    handleModal={handleModal}
+                    handleAction={handleDelete}
+                    title="¿Estas seguro de eliminar esta inscripcion?"
+               />
                <PageHeader
                     title={"Inscripciones"}
                     buttonTitle="Agregar inscripciones"

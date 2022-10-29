@@ -1,12 +1,20 @@
 import { Box } from "@mui/material";
 import { useContext, useState } from "react";
-import { DataGridWithModal, EditSignUpOnDemandModal, PageHeader } from "../components";
-import { DataContext } from "../context";
+import { deleteSignUpsOnDemand } from "../../utils";
+import { DataGridWithModal, EditSignUpOnDemandModal, ModalAction, PageHeader } from "../components";
+import { DataContext, ModalContext } from "../context";
 
 export const SignUpOnDemandPage = () => {
-     const { signUpOnDemand } = useContext(DataContext);
+     const { signUpOnDemand, signUpsOnDemandChangers } = useContext(DataContext);
+     const { isModalOpen: isModalDeleteOpen, handleModal, id } = useContext(ModalContext);
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [onEditId, setOnEditId] = useState("");
+
+     const handleDelete = async () => {
+          const { ok } = await deleteSignUpsOnDemand(id)
+          if(!ok) return
+          signUpsOnDemandChangers.deleteData(id);
+     };
 
      const closeModal = () => {
           setIsModalOpen(false);
@@ -18,6 +26,12 @@ export const SignUpOnDemandPage = () => {
      };
      return (
           <>
+               <ModalAction
+                    isModalOpen={isModalDeleteOpen}
+                    handleModal={handleModal}
+                    handleAction={handleDelete}
+                    title="¿Estas seguro de eliminar esta inscripcion?"
+               />
                <PageHeader
                     title="Inscripciones Cursos OnDemand"
                     buttonTitle={"Agregar cursos"}
@@ -30,7 +44,11 @@ export const SignUpOnDemandPage = () => {
                          handleCell={openModal}
                     />
                </Box>
-               <EditSignUpOnDemandModal isModalOpen={isModalOpen} handleModal={closeModal} id={onEditId} />
+               <EditSignUpOnDemandModal
+                    isModalOpen={isModalOpen}
+                    handleModal={closeModal}
+                    id={onEditId}
+               />
           </>
      );
 };

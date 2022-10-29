@@ -14,7 +14,7 @@ export const postLogin = async ({ email, password }) => {
      } catch (error) {
           return {
                ok: false,
-               error: error.response.data.message
+               errorMessage: error.response.data.message || 'Ha ocurrido un error'
           }
      }
 };

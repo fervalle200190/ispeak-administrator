@@ -124,6 +124,10 @@ export const DataProvider = ({ children }) => {
 
      const supportMaterialsChangers = useChangeData(supportMaterial, setSupportMaterial)
 
+     const signUpsOnDemandChangers = useChangeData(signUpOnDemand, setSignUpOnDemand)
+
+     const signUpsChangers = useChangeData(signUp, setSignUp)
+
      useEffect(() => {
           getStudentsAndProfessors();
           getPrograms();
@@ -168,7 +172,9 @@ export const DataProvider = ({ children }) => {
                     getStudyMaterials,
                     getSupportMaterials,
                     supportMaterialsChangers,
-                    getSignUps
+                    getSignUps,
+                    signUpsOnDemandChangers,
+                    signUpsChangers
                }}
           >
                {children}

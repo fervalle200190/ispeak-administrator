@@ -5,30 +5,47 @@ import { SnackBarComponent } from "../../ispeak/components";
 import { postLogin } from "../../utils";
 import { AuthContext } from "../context";
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El Profesor ha sido creado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const LoginPage = () => {
      const { formState, onInputChange } = useForm({ email: "", password: "" });
      const { handleLogin } = useContext(AuthContext);
-     const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-     const handleSnackbar = () => {
-          setIsSnackbarOpen(!isSnackbarOpen);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
+     const [isLoading, setIsLoading] = useState(false)
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
      };
      const call = async (e) => {
           e.preventDefault();
+          setIsLoading(true)
           const res = await postLogin({
                email: formState.email,
                password: formState.password,
           });
+          setIsLoading(false)
           if (!res.ok) {
-               return alert(res.error);
-          }
-          if (res.data.rol !== "Administrador") {
-               handleSnackbar();
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
                return;
           }
-          if (res.status === 200) {
-               localStorage.setItem("LoggedUser", JSON.stringify(res.data));
-               window.location.reload();
+          if (res.data.rol !== "Administrador") {
+               setSnackBarInfo({ ...errorSnackbar, message: 'Esta cuenta no posee privilegios de administrador' });
+               return;
           }
+          localStorage.setItem("LoggedUser", JSON.stringify(res.data));
+          window.location.reload();
      };
      return (
           <Grid container justifyContent={"center"} alignItems="center" minHeight={"100vh"}>
@@ -79,17 +96,13 @@ export const LoginPage = () => {
                               variant="contained"
                               type="submit"
                               sx={{ background: "primary.dark", mt: 1 }}
+                              disabled={isLoading}
                          >
                               Ingresar
                          </Button>
                     </form>
                </Grid>
-               <SnackBarComponent
-                    isSnackBarOpen={isSnackbarOpen}
-                    handleSnackbar={handleSnackbar}
-                    message="no tienes los permisos necesarios para acceder"
-                    severity="error"
-               />
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </Grid>
      );
 };
