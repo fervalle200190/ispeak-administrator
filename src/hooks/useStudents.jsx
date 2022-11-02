@@ -26,15 +26,15 @@ export const useStudents = (users) => {
           },
      ];
      const usersRow = users
-          .filter((user) => user.rol === "Alumno")
-          .map((user) => ({
-               id: user.id || "no info",
-               nameAndLastName: user.nombre || "no info",
-               email: user.email || "no info",
-               city: user.ciudad || "no info",
-               country: user.pais.nombre || "no info",
-               currentCourse: "no info",
-          }));
+     .filter((user) => user.rol === "Alumno")
+     .map((user) => ({
+          id: user.id || "no info",
+          nameAndLastName: user.nombre || "no info",
+          email: user.email || "no info",
+          city: user.ciudad || "no info",
+          country: user.pais.nombre || "no info",
+          currentCourse: "no info",
+     }));
 
      return {
           columns,

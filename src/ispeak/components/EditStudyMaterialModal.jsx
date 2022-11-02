@@ -1,68 +1,189 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useCourseSelect, useEditStudyMaterials, useForm } from "../../hooks";
-import { getUserById } from "../../utils";
+import { useCourseSelect, useEditStudyMaterials, useForm, useSignUpForm } from "../../hooks";
+import { updateImagePreview, updateStudyMaterial } from "../../utils";
+import { getStudyMaterialById } from "../../utils/getStudyMaterialById";
 import { ModalEditLayout } from "../layout/ModalEditLayout";
+import { initialClassOption } from "../utils";
 import { SelectOptions } from "./SelectOptions";
+import { SnackBarComponent } from "./SnackBarComponent";
+
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El material de estudio ha sido editado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
 
 export const EditStudyMaterialModal = ({ isModalOpen, handleModal, id }) => {
-     const { nombre, onInputChange, setFormState } = useForm({ nombre: "", curso: "" });
+     const { nombre, linkVideo, onInputChange, setFormState } = useForm({ nombre: "", linkVideo: '' });
      const { courseSelected, coursesList, handleCourse } = useCourseSelect();
-     const { modulesList, handleModule, moduleSelected } = useEditStudyMaterials(courseSelected);
-     const [userData, setUserData] = useState({});
+     const { modulesList, handleModule, moduleSelected, handleClaseSelected, claseSelected } =
+          useEditStudyMaterials(courseSelected);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
+     const [materialData, setMaterialData] = useState({});
+     const [file, setFile] = useState("");
+     const [isLoading, setIsLoading] = useState(false);
 
-     const getUser = async () => {
-          const user = await getUserById(id);
-          setFormState({nombre: user.nombre})
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
+     };
+
+     const handleFile = (e) => {
+          setFile(e.target.files[0]);
+     };
+
+     const getMaterial = async () => {
+          const { data: material } = await getStudyMaterialById(id);
+          setMaterialData(material);
+          handleCourse({ target: { value: material.cursoId } });
+          handleModule({ target: { value: material.moduloId } });
+          handleClaseSelected({target: {value: `Clase ${material.claseNumero}`}})
+          setFormState({ nombre: material.nombre, linkVideo: material.linkVideo });
      };
 
      useEffect(() => {
           if (id === "") return;
-          getUser();
+          getMaterial();
      }, [id]);
 
+     const onSubmit = async (e) => {
+          e.preventDefault();
+          if (
+               courseSelected === materialData.cursoId &&
+               moduleSelected === materialData.moduloId &&
+               nombre === materialData.nombre &&
+               claseSelected === `Clase ${materialData.claseNumero}` &&
+               linkVideo === materialData.linkVideo &&
+               file === ""
+          ) {
+               setSnackBarInfo({
+                    ...errorSnackbar,
+                    message: "Por favor cambia algunos de los datos para editar",
+               });
+               return;
+          }
+          setIsLoading(true);
+          if (
+               courseSelected !== materialData.cursoId ||
+               moduleSelected !== materialData.moduloId ||
+               claseSelected === `Clase ${materialData.claseNumero}` ||
+               linkVideo === materialData.linkVideo ||
+               nombre !== materialData.nombre
+          ) {
+               const res = await updateStudyMaterial({
+                    ...materialData,
+                    cursoId: courseSelected,
+                    moduloId: moduleSelected,
+                    claseNumero: claseSelected,
+                    linkVideo,
+                    nombre,
+               });
+               if (!res.ok) {
+                    setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+                    setIsLoading(false);
+                    return;
+               }
+               setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          }
+          if (file !== "") {
+               const res = await updateImagePreview(materialData.id, file);
+               if (!res.ok) {
+                    setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+                    setIsLoading(false);
+                    return;
+               }
+               setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          }
+          setIsLoading(false);
+     };
+
      return (
-          <ModalEditLayout width={`50%`} isModalOpen={isModalOpen} handleModal={handleModal}>
-               <Box component={"form"} sx={{ p: 5 }}>
-                    <Grid container spacing={2}>
-                         <Grid item xs={12}>
-                              <TextField
-                                   fullWidth
-                                   label="Nombre"
-                                   name="nombre"
-                                   onChange={onInputChange}
-                                   value={nombre}
-                                   InputLabelProps={{
-                                        className: "textfield-label",
-                                   }}
-                              />
+          <>
+               <ModalEditLayout width={`50%`} isModalOpen={isModalOpen} handleModal={handleModal}>
+                    <Box component={"form"} sx={{ p: 5 }} onSubmit={onSubmit}>
+                         <Grid container spacing={2}>
+                              <Grid item xs={12}>
+                                   <TextField
+                                        fullWidth
+                                        label="Nombre"
+                                        name="nombre"
+                                        onChange={onInputChange}
+                                        value={nombre}
+                                        InputLabelProps={{
+                                             className: "textfield-label",
+                                        }}
+                                   />
+                              </Grid>
+                              <Grid item xs={12}>
+                                   <SelectOptions
+                                        label={"Curso"}
+                                        options={coursesList}
+                                        value={courseSelected}
+                                        handleSelect={handleCourse}
+                                   />
+                              </Grid>
+                              <Grid item xs={12}>
+                                   <SelectOptions
+                                        label={"Modulo"}
+                                        options={modulesList}
+                                        value={modulesList.length <= 0 ? "" : moduleSelected}
+                                        handleSelect={handleModule}
+                                   />
+                              </Grid>
+                              <Grid item xs={12}>
+                                   <SelectOptions
+                                        label={"Clase"}
+                                        options={initialClassOption}
+                                        value={claseSelected}
+                                        handleSelect={handleClaseSelected}
+                                   />
+                              </Grid>
+                              <Grid item xs={12}>
+                                   <TextField
+                                        fullWidth
+                                        label="Link del video"
+                                        name="linkVideo"
+                                        onChange={onInputChange}
+                                        value={linkVideo}
+                                        InputLabelProps={{
+                                             className: "textfield-label",
+                                        }}
+                                   />
+                              </Grid>
+                              <Grid item xs={12}>
+                                   <TextField type={"file"} onChange={handleFile} />
+                              </Grid>
+                              <Grid item xs={12}>
+                                   <Button
+                                        variant="outlined"
+                                        sx={{ mr: 2 }}
+                                        type="submit"
+                                        disabled={isLoading}
+                                   >
+                                        Guardar
+                                   </Button>
+                                   <Button
+                                        variant="contained"
+                                        onClick={handleModal}
+                                        color="error"
+                                        disabled={isLoading}
+                                   >
+                                        Cancelar
+                                   </Button>
+                              </Grid>
                          </Grid>
-                         <Grid item xs={12}>
-                              <SelectOptions
-                                   label={"Curso"}
-                                   options={coursesList}
-                                   value={courseSelected}
-                                   handleSelect={handleCourse}
-                              />
-                         </Grid>
-                         <Grid item xs={12}>
-                              <SelectOptions
-                                   label={"Modulo"}
-                                   options={modulesList}
-                                   value={moduleSelected}
-                                   handleSelect={handleModule}
-                              />
-                         </Grid>
-                         <Grid item xs={12}>
-                              <Button variant="outlined" sx={{ mr: 2 }}>
-                                   Guardar
-                              </Button>
-                              <Button variant="contained" color="error">
-                                   Cancelar
-                              </Button>
-                         </Grid>
-                    </Grid>
-               </Box>
-          </ModalEditLayout>
+                    </Box>
+               </ModalEditLayout>
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
+          </>
      );
 };

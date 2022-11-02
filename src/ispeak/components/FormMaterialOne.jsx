@@ -86,6 +86,11 @@ export const FormMaterialOne = () => {
           };
           setIsLoading(true);
           const studyMaterial = await postStudyMaterial(dataToSend);
+          if (!studyMaterial.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: studyMaterial.errorMessage });
+               setIsLoading(false);
+               return;
+          }
           const name = await uploadGeneralFiles(files[`ImagenPreview`]);
           if (!name.ok) {
                setSnackBarInfo({ ...errorSnackbar, message: name.errorMessage });
@@ -94,7 +99,7 @@ export const FormMaterialOne = () => {
           }
           const fileWith = {
                fileName: name.data,
-               Ids: studyMaterial,
+               Ids: studyMaterial.data,
           };
           const res = await updateFiles("ImagenPreview", fileWith);
           if (!res.ok) {

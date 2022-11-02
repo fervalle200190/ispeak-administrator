@@ -36,3 +36,38 @@ export const signUpType = [
      { label: "Individual", value: "Individual" },
      { label: "Grupal", value: "Grupal" },
 ];
+
+export const initialClassOption = [
+     {
+          label: 'Clase 1',
+          value: 'Clase 1'
+     },
+     {
+          label: 'Clase 2',
+          value: 'Clase 2'
+     },
+     {
+          label: 'Clase 3',
+          value: 'Clase 3'
+     },
+     {
+          label: 'Clase 4',
+          value: 'Clase 4'
+     },
+     {
+          label: 'Clase 5',
+          value: 'Clase 5'
+     },
+     {
+          label: 'Clase 6',
+          value: 'Clase 6'
+     },
+     {
+          label: 'Clase 7',
+          value: 'Clase 7'
+     },
+     {
+          label: 'Clase 8',
+          value: 'Clase 8'
+     },
+]

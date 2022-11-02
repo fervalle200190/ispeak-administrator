@@ -1,7 +1,7 @@
 import { Box, Button, Grid } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { useCourseByBusiness, useEditData } from "../../hooks";
-import { getModuleById, updateModule } from "../../utils";
+import { deleteModule, getModuleById, updateModule } from "../../utils";
 import { CourseContext, DataContext, ModalContext, ModalTabsContext } from "../context";
 import { processBusinessUnit, processModule } from "../helper";
 import { AddModuleModal } from "./AddModuleModal";
@@ -35,7 +35,9 @@ export const TabsTwoOnDemand = () => {
           updateModule
      );
 
-     const handleDelete = () => {
+     const handleDelete = async () => {
+          const res = await deleteModule(id)
+          if(!res.ok) return
           modulesChangers.deleteData(id);
      };
 
