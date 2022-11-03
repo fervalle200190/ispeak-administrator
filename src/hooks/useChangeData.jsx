@@ -14,6 +14,18 @@ export const useChangeData = ( mainData, setMainData, dataChanger) => {
                rows: newUpdate,
           });
      };
+     const updateDataWithModal = async (data) => {
+          const newUpdate = mainData.rows.map((maindata) => {
+               if (maindata.id === data.id) {
+                    return data
+               }
+               return maindata;
+          });
+          setMainData({
+               ...mainData,
+               rows: newUpdate,
+          });
+     };
      const deleteData = (id) => {
           const newData = mainData.rows.filter((data) => data.id !== id);
           setMainData({
@@ -34,5 +46,6 @@ export const useChangeData = ( mainData, setMainData, dataChanger) => {
           updateData,
           deleteData,
           addData,
+          updateDataWithModal
      };
 };

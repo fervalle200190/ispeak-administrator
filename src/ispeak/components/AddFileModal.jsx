@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ModalLayout } from "../layout/modalLayout";
+import { ModalLayout } from "../layout/ModalLayout";
 import { SnackBarComponent } from "./SnackBarComponent";
 import { SupportFormTwo } from "./SupportFormTwo";
 

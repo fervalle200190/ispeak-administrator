@@ -49,6 +49,7 @@ export const StudyMaterialPage = () => {
                     isModalOpen={isModalOpen}
                     handleModal={closeModal}
                     id={onEditId}
+                    studyMaterialsChangers={studyMaterialsChangers}
                />
           </>
      );

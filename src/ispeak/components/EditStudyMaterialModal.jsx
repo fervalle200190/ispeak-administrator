@@ -1,8 +1,9 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useCourseSelect, useEditStudyMaterials, useForm, useSignUpForm } from "../../hooks";
+import { useCourseSelect, useEditStudyMaterials, useForm } from "../../hooks";
 import { updateImagePreview, updateStudyMaterial } from "../../utils";
 import { getStudyMaterialById } from "../../utils/getStudyMaterialById";
+import { processStudyMaterial } from "../helper";
 import { ModalEditLayout } from "../layout/ModalEditLayout";
 import { initialClassOption } from "../utils";
 import { SelectOptions } from "./SelectOptions";
@@ -20,8 +21,16 @@ const errorSnackbar = {
      message: "Ha ocurrido un error",
 };
 
-export const EditStudyMaterialModal = ({ isModalOpen, handleModal, id }) => {
-     const { nombre, linkVideo, onInputChange, setFormState } = useForm({ nombre: "", linkVideo: '' });
+export const EditStudyMaterialModal = ({
+     isModalOpen,
+     handleModal,
+     id,
+     studyMaterialsChangers,
+}) => {
+     const { nombre, linkVideo, onInputChange, setFormState } = useForm({
+          nombre: "",
+          linkVideo: "",
+     });
      const { courseSelected, coursesList, handleCourse } = useCourseSelect();
      const { modulesList, handleModule, moduleSelected, handleClaseSelected, claseSelected } =
           useEditStudyMaterials(courseSelected);
@@ -46,7 +55,7 @@ export const EditStudyMaterialModal = ({ isModalOpen, handleModal, id }) => {
           setMaterialData(material);
           handleCourse({ target: { value: material.cursoId } });
           handleModule({ target: { value: material.moduloId } });
-          handleClaseSelected({target: {value: `Clase ${material.claseNumero}`}})
+          handleClaseSelected({ target: { value: `Clase ${material.claseNumero}` } });
           setFormState({ nombre: material.nombre, linkVideo: material.linkVideo });
      };
 
@@ -79,20 +88,30 @@ export const EditStudyMaterialModal = ({ isModalOpen, handleModal, id }) => {
                linkVideo === materialData.linkVideo ||
                nombre !== materialData.nombre
           ) {
-               const res = await updateStudyMaterial({
-                    ...materialData,
-                    cursoId: courseSelected,
-                    moduloId: moduleSelected,
-                    claseNumero: claseSelected,
-                    linkVideo,
-                    nombre,
-               });
+               const res = await updateStudyMaterial(
+                    processStudyMaterial({
+                         materialData,
+                         courseSelected,
+                         moduleSelected,
+                         claseSelected,
+                         linkVideo,
+                         nombre,
+                    })
+               );
                if (!res.ok) {
                     setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
                     setIsLoading(false);
                     return;
                }
                setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+               studyMaterialsChangers.updateDataWithModal({
+                    id: materialData.id,
+                    name: nombre,
+                    course: coursesList.find((course)=> course.value === courseSelected).label,
+                    module: modulesList.find((mod)=> mod.value === moduleSelected).label,
+                    class: claseSelected,
+                    active: materialData.activo? 'Activo': 'No Activo',
+               });
           }
           if (file !== "") {
                const res = await updateImagePreview(materialData.id, file);
