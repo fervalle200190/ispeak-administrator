@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { useForm } from "../../hooks";
 import { postModules } from "../../utils";
 import { CourseContext } from "../context";
-import { ModalLayout } from "../layout/modalLayout";
+import { ModalLayout } from "../layout/ModalLayout";
 import { SelectOptions } from "./SelectOptions";
 import { SnackBarComponent } from "./SnackBarComponent";
 
