@@ -2,7 +2,7 @@ import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useCoursesByBusinessList, useForm } from "../../hooks";
 import { postRoom } from "../../utils";
-import { ModalLayout } from "../layout/modalLayout";
+import { ModalLayout } from "../layout/ModalLayout";
 import { SelectOptions } from "./SelectOptions";
 import { SnackBarComponent } from "./SnackBarComponent";
 
