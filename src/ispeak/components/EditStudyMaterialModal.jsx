@@ -5,7 +5,6 @@ import { updateImagePreview, updateStudyMaterial } from "../../utils";
 import { getStudyMaterialById } from "../../utils/getStudyMaterialById";
 import { processStudyMaterial } from "../helper";
 import { ModalEditLayout } from "../layout/ModalEditLayout";
-import { initialClassOption } from "../utils";
 import { SelectOptions } from "./SelectOptions";
 import { SnackBarComponent } from "./SnackBarComponent";
 
@@ -26,6 +25,7 @@ export const EditStudyMaterialModal = ({
      handleModal,
      id,
      studyMaterialsChangers,
+     totalStudyMaterial
 }) => {
      const { nombre, linkVideo, onInputChange, setFormState } = useForm({
           nombre: "",
@@ -38,6 +38,8 @@ export const EditStudyMaterialModal = ({
      const [materialData, setMaterialData] = useState({});
      const [file, setFile] = useState("");
      const [isLoading, setIsLoading] = useState(false);
+
+     const classStudy = [...Array(totalStudyMaterial)].map((item, i)=> ({label: `Clase ${i + 1}`,value: `Clase ${i + 1}`}))
 
      const closeSnackbar = () => {
           setSnackBarInfo({
@@ -161,7 +163,7 @@ export const EditStudyMaterialModal = ({
                               <Grid item xs={12}>
                                    <SelectOptions
                                         label={"Clase"}
-                                        options={initialClassOption}
+                                        options={classStudy}
                                         value={claseSelected}
                                         handleSelect={handleClaseSelected}
                                    />

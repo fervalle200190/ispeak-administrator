@@ -50,6 +50,7 @@ export const StudyMaterialPage = () => {
                     handleModal={closeModal}
                     id={onEditId}
                     studyMaterialsChangers={studyMaterialsChangers}
+                    totalStudyMaterial={studyMaterial.rows.length}
                />
           </>
      );
