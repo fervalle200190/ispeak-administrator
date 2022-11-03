@@ -1,5 +1,5 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCourseSelect, useEditStudyMaterials, useForm } from "../../hooks";
 import { updateImagePreview, updateStudyMaterial } from "../../utils";
 import { getStudyMaterialById } from "../../utils/getStudyMaterialById";
@@ -25,7 +25,7 @@ export const EditStudyMaterialModal = ({
      handleModal,
      id,
      studyMaterialsChangers,
-     totalStudyMaterial
+     totalStudyMaterial,
 }) => {
      const { nombre, linkVideo, onInputChange, setFormState } = useForm({
           nombre: "",
@@ -39,7 +39,12 @@ export const EditStudyMaterialModal = ({
      const [file, setFile] = useState("");
      const [isLoading, setIsLoading] = useState(false);
 
-     const classStudy = [...Array(totalStudyMaterial)].map((item, i)=> ({label: `Clase ${i + 1}`,value: `Clase ${i + 1}`}))
+     const classStudy = useMemo(() => {
+          return [...Array(totalStudyMaterial)].map((item, i) => ({
+               label: `Clase ${i + 1}`,
+               value: `Clase ${i + 1}`,
+          }));
+     }, [totalStudyMaterial]);
 
      const closeSnackbar = () => {
           setSnackBarInfo({
@@ -109,10 +114,10 @@ export const EditStudyMaterialModal = ({
                studyMaterialsChangers.updateDataWithModal({
                     id: materialData.id,
                     name: nombre,
-                    course: coursesList.find((course)=> course.value === courseSelected).label,
-                    module: modulesList.find((mod)=> mod.value === moduleSelected).label,
+                    course: coursesList.find((course) => course.value === courseSelected).label,
+                    module: modulesList.find((mod) => mod.value === moduleSelected).label,
                     class: claseSelected,
-                    active: materialData.activo? 'Activo': 'No Activo',
+                    active: materialData.activo ? "Activo" : "No Activo",
                });
           }
           if (file !== "") {
