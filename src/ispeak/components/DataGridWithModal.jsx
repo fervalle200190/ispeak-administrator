@@ -1,6 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
 
-export const DataGridWithModal = ({ rows, columns, handleCell }) => {
+export const DataGridWithModal = ({ rows, columns, handleCell, onChangeElements }) => {
      return (
           <>
                <DataGrid
@@ -9,7 +9,8 @@ export const DataGridWithModal = ({ rows, columns, handleCell }) => {
                     onCellDoubleClick={(params) => handleCell(params)}
                     pageSize={10}
                     rowsPerPageOptions={[10]}
-                    disableSelectionOnClick
+                    checkboxSelection={true}
+                    onSelectionModelChange={(params)=> onChangeElements(params)}
                />
           </>
      );

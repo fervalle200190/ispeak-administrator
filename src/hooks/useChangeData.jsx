@@ -33,6 +33,20 @@ export const useChangeData = ( mainData, setMainData, dataChanger) => {
                rows: newData,
           });
      };
+     const onDeleteSeveral = (...listId)=> {
+          console.log(listId)
+          console.log(mainData)
+          const newData = mainData.rows.filter((data) => {
+               console.log(listId, data.id)
+               console.log(!listId.includes(data.id) )
+               return !listId.includes(data.id) 
+          });
+          setMainData({
+               ...mainData,
+               rows: newData,
+          });
+     }
+
      const addData = (data) => {
           const dataChanged = dataChanger(data)
           const newData = {
@@ -46,6 +60,7 @@ export const useChangeData = ( mainData, setMainData, dataChanger) => {
           updateData,
           deleteData,
           addData,
-          updateDataWithModal
+          updateDataWithModal,
+          onDeleteSeveral
      };
 };

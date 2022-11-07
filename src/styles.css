@@ -16,7 +16,7 @@
 }
 
 .link-active .MuiListItem-root {
-    background: #000027;
+     background: #000027;
 }
 
 .textfield-label {
@@ -25,4 +25,36 @@
 
 #label-id {
      color: #000;
+}
+
+.trash {
+     visibility: visible;
+     animation: popTrash 0.2s ease-in-out;
+}
+
+.fade-in-trash {
+     animation: fadeTrash 0.2s ease-in-out forwards;
+}
+
+@keyframes fadeTrash {
+     0% {
+          opacity: 1;
+          transform: translate(0, 0px);
+     }
+     100% {
+          opacity: 0;
+          transform: translate(0, -10px);
+          visibility: hidden;
+     }
+}
+
+@keyframes popTrash {
+     0% {
+          opacity: 0;
+          transform: translate(0, -10px);
+     }
+     100% {
+          opacity: 1;
+          transform: translate(0, 0px);
+     }
 }

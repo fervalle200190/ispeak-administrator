@@ -62,7 +62,7 @@ export const AddModuleModal = ({ courses, handleModal }) => {
           };
           const module = await postModules(moduleToSend);
           if (!module.ok) {
-               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               setSnackBarInfo({ ...errorSnackbar, message: module.errorMessage });
                return;
           }
           addModule(module.data);

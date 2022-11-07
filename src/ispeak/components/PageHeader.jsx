@@ -1,7 +1,8 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, IconButton, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
-export const PageHeader = ({ title, buttonTitle, url }) => {
+export const PageHeader = ({ title, buttonTitle, url, elementsToDelete = [], onDeleteAll }) => {
      return (
           <Grid
                container
@@ -11,9 +12,20 @@ export const PageHeader = ({ title, buttonTitle, url }) => {
           >
                <Typography variant="h4">{title}</Typography>
                {buttonTitle && (
-                    <Link to={url} style={{ textDecoration: "none" }}>
-                         <Button variant="contained">{buttonTitle}</Button>
-                    </Link>
+                    <Grid item>
+                         <IconButton
+                              onClick={onDeleteAll}
+                              className={`${
+                                   elementsToDelete.length > 0 ? "" : "fade-in-trash"
+                              } trash`}
+                              sx={{mr: 2}}
+                         >
+                              <DeleteRoundedIcon color={"primary"} />
+                         </IconButton>
+                         <Link to={url} style={{ textDecoration: "none" }}>
+                              <Button variant="contained">{buttonTitle}</Button>
+                         </Link>
+                    </Grid>
                )}
           </Grid>
      );

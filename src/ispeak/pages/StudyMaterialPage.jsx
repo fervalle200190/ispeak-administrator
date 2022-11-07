@@ -1,19 +1,26 @@
 import { Box } from "@mui/material";
 import { useState } from "react";
 import { useContext } from "react";
+import { useDeleteAll } from "../../hooks";
 import { deleteStudyMaterial } from "../../utils";
-import { Datagrid, DataGridWithModal, EditStudyMaterialModal, ModalAction, PageHeader } from "../components";
+import {
+     DataGridWithModal,
+     EditStudyMaterialModal,
+     ModalAction,
+     PageHeader,
+} from "../components";
 import { DataContext, ModalContext } from "../context";
 
 export const StudyMaterialPage = () => {
      const { studyMaterial, studyMaterialsChangers } = useContext(DataContext);
+     const { elementsToDelete, onChangeElements, onDeleteAll } = useDeleteAll(studyMaterialsChangers.onDeleteSeveral, deleteStudyMaterial)
      const { isModalOpen: isModalDeleteOpen, handleModal, id } = useContext(ModalContext);
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [onEditId, setOnEditId] = useState("");
 
      const handleDelete = async () => {
-          const { ok } = await deleteStudyMaterial(id)
-          if(!ok) return
+          const { ok } = await deleteStudyMaterial(id);
+          if (!ok) return;
           studyMaterialsChangers.deleteData(id);
      };
 
@@ -37,12 +44,16 @@ export const StudyMaterialPage = () => {
                     title={"Material Estudio"}
                     buttonTitle="Agregar Material"
                     url="/study-material/ingresar"
+                    elementsToDelete={elementsToDelete}
+                    onDeleteAll={onDeleteAll}
                />
                <Box height={"100vh"} sx={{ pr: 2 }}>
                     <DataGridWithModal
                          columns={studyMaterial.columns}
                          rows={studyMaterial.rows}
                          handleCell={openModal}
+                         onChangeElements={onChangeElements}
+                         
                     />
                </Box>
                <EditStudyMaterialModal

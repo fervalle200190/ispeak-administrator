@@ -1,5 +1,5 @@
 import { Box, Button, Grid } from "@mui/material";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useCourseByBusiness, useEditData } from "../../hooks";
 import { deleteModule, getModuleById, updateModule } from "../../utils";
 import { CourseContext, DataContext, ModalContext, ModalTabsContext } from "../context";
@@ -34,6 +34,11 @@ export const TabsTwoOnDemand = () => {
           getModuleById,
           updateModule
      );
+
+     useEffect(() => {
+       console.log(modulesRaw)
+     }, [modulesRaw])
+     
 
      const handleDelete = async () => {
           const res = await deleteModule(id)

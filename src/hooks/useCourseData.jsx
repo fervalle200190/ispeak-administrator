@@ -11,6 +11,7 @@ export const useCourseData = () => {
 
      const getModules = async () => {
           const modules = await getAllModules();
+          console.log(modules, 'hola')
           setModulesRaw(modules);
      };
 

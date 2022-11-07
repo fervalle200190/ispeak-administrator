@@ -6,7 +6,7 @@ export const useModules = (modules, course) => {
      );
      const columns = [
           { field: "id", headerName: "Código", width: 150 },
-          { field: "name", headerName: "Nombre", width: 150, editable: true },
+          { field: "name", headerName: "Nombre", width: 250, editable: true },
           { field: "duration", headerName: "Duración", width: 150, editable: true },
           { field: "active", headerName: "Activo", width: 100 },
           {
