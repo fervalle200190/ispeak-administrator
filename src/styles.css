@@ -27,6 +27,10 @@
      color: #000;
 }
 
+.trash-normal {
+     visibility: hidden;
+}
+
 .trash {
      visibility: visible;
      animation: popTrash 0.2s ease-in-out;

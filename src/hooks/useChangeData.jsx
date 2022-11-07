@@ -33,12 +33,8 @@ export const useChangeData = ( mainData, setMainData, dataChanger) => {
                rows: newData,
           });
      };
-     const onDeleteSeveral = (...listId)=> {
-          console.log(listId)
-          console.log(mainData)
+     const onDeleteSeveral = (listId)=> {
           const newData = mainData.rows.filter((data) => {
-               console.log(listId, data.id)
-               console.log(!listId.includes(data.id) )
                return !listId.includes(data.id) 
           });
           setMainData({

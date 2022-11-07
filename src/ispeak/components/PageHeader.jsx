@@ -15,7 +15,7 @@ export const PageHeader = ({ title, buttonTitle, url, elementsToDelete = [], onD
                     <Grid item>
                          <IconButton
                               onClick={onDeleteAll}
-                              className={`${
+                              className={`trash-normal ${
                                    elementsToDelete.length > 0 ? "" : "fade-in-trash"
                               } trash`}
                               sx={{mr: 2}}

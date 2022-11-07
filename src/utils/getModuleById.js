@@ -1,6 +1,16 @@
 import { ispeakAPI, id } from "./IspeakAPI";
 
 export const getModuleById = async (moduleId) => {
-     const { data } = await ispeakAPI.get(`/Modulos/GetById/${moduleId}/1234/${id}`);
-     return data;
+     try {
+          const { data } = await ispeakAPI.get(`/Modulos/GetById/${moduleId}/1234/`);
+          return {
+               ok: true,
+               data,
+          };
+     } catch (error) {
+          return {
+               ok: false,
+               errorMessage: error.response.message || "Ha ocurrido un error",
+          };
+     }
 };

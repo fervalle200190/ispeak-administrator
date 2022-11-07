@@ -8,20 +8,46 @@ import {
      EditStudyMaterialModal,
      ModalAction,
      PageHeader,
+     SnackBarComponent,
 } from "../components";
 import { DataContext, ModalContext } from "../context";
+
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El material de estudio ha sido editado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
 
 export const StudyMaterialPage = () => {
      const { studyMaterial, studyMaterialsChangers } = useContext(DataContext);
      const { elementsToDelete, onChangeElements, onDeleteAll } = useDeleteAll(studyMaterialsChangers.onDeleteSeveral, deleteStudyMaterial)
      const { isModalOpen: isModalDeleteOpen, handleModal, id } = useContext(ModalContext);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [onEditId, setOnEditId] = useState("");
 
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
+     };
+
      const handleDelete = async () => {
-          const { ok } = await deleteStudyMaterial(id);
-          if (!ok) return;
+          const { ok, errorMessage } = await deleteStudyMaterial(id);
+          if (!ok) return setSnackBarInfo({ ...errorSnackbar, message: errorMessage });
           studyMaterialsChangers.deleteData(id);
+          setSnackBarInfo({
+               ...initialSnackBar,
+               isSnackBarOpen: true,
+               message: "El material de estudio ha sido eliminado correctamente!!!",
+          });
      };
 
      const openModal = ({ id }) => {
@@ -63,6 +89,7 @@ export const StudyMaterialPage = () => {
                     studyMaterialsChangers={studyMaterialsChangers}
                     totalStudyMaterial={studyMaterial.rows.length}
                />
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </>
      );
 };
