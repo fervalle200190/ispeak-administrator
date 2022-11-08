@@ -33,8 +33,8 @@ export const CoursesPage = () => {
      );
 
      const handleDelete = async () => {
-          const { res } = await deleteCourse(id)
-          if(!res) return
+          const { ok } = await deleteCourse(id)
+          if(!ok) return
           coursesChangers.deleteData(id);
      };
      return (

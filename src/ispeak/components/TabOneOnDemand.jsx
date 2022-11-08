@@ -53,7 +53,7 @@ export const TabOneOnDemand = () => {
                fechaCreacion: new Date().toISOString(),
                activo: "true",
                planEstudio: "",
-               unidadNegocioId: "4",
+               unidadNegocioId: 4,
                profesorId: "",
                // profesorId: professorSelected,
           };
