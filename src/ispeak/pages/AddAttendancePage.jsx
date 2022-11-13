@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { useForm, useParsedData } from "../../hooks";
 import { getModulesByCourse, postAttendance } from "../../utils";
-import { PageHeader, SelectOptions } from "../components";
+import { PageHeader, SelectOptions, SnackBarComponent } from "../components";
 import { DataContext } from "../context";
 import { processAttendance } from "../helper";
 import { initialClassOption } from "../utils";
@@ -21,14 +21,27 @@ const initialSelected = {
      classSelected: "",
 };
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "El material de estudio ha sido editado exitosamente!!",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const AddAttendancePage = () => {
-     const { courses, students, professors } = useContext(DataContext);
+     const { courses, students, professors, getAttends } = useContext(DataContext);
      const { coursesParsed, studentsParsed, professorsParsed } = useParsedData({
           courses,
           students,
           professors,
      });
-     const { observaciones, date, onInputChange } = useForm(initialForm);
+     const { observaciones, date, onInputChange, onResetForm } = useForm(initialForm);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const [valueSelected, setValueSelected] = useState(initialSelected);
      const [selectsData, setSelectsData] = useState({ moduleList: [] });
 
@@ -36,6 +49,13 @@ export const AddAttendancePage = () => {
           const res = await getModulesByCourse(valueSelected.courseSelected);
           setSelectsData({
                moduleList: res.map((mod) => ({ label: mod.nombre, value: mod.id })),
+          });
+     };
+
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
           });
      };
 
@@ -62,11 +82,24 @@ export const AddAttendancePage = () => {
                observaciones === "" ||
                date === ""
           ) {
-               // error
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
-          const res = await postAttendance(processAttendance({...valueSelected, observaciones, date}))
-          console.log(res)
+          const res = await postAttendance(
+               processAttendance({ ...valueSelected, observaciones, date })
+          );
+          if (!res.ok) {
+               setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+               return;
+          }
+          setSnackBarInfo({
+               ...initialSnackBar,
+               isSnackBarOpen: true,
+               message: "Asistencia creada exitosamente!!!",
+          });
+          onResetForm()
+          setValueSelected(initialSelected)
+          getAttends()
      };
 
      return (
@@ -143,12 +176,13 @@ export const AddAttendancePage = () => {
                               />
                          </Grid>
                          <Grid item xs={12} sx={{ m: 1 }}>
-                              <Button variant="outlined" size={"large"}>
+                              <Button variant="outlined" size={"large"} type="submit">
                                    Guardar
                               </Button>
                          </Grid>
                     </Grid>
                </Box>
+               <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </>
      );
 };

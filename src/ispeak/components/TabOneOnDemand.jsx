@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useForm } from "../../hooks";
 import { postCourse } from "../../utils";
 import { DataContext } from "../context";
+import { initialCategory } from "../utils";
 import { SelectOptions } from "./SelectOptions";
 import { SnackBarComponent } from "./SnackBarComponent";
 
@@ -26,6 +27,7 @@ export const TabOneOnDemand = () => {
      const [professorsList, setProfessorsList] = useState([]);
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
      const [professorSelected, setProfessorSelected] = useState("");
+     const [categorySelected, setCategorySelected] = useState('')
      const { professors, coursesChangers } = useContext(DataContext);
      const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
 
@@ -40,9 +42,13 @@ export const TabOneOnDemand = () => {
           setProfessorSelected(e.target.value);
      };
 
+     const handleCategory = (e)=> {
+          setCategorySelected(e.target.value)
+     }
+
      const handleSubmit = async (e) => {
           e.preventDefault();
-          if (formState.nombre === "" || professorSelected === '') {
+          if (formState.nombre === "" || professorSelected === "" || categorySelected === '') {
                setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
@@ -52,7 +58,7 @@ export const TabOneOnDemand = () => {
                duracion: 0,
                fechaCreacion: new Date().toISOString(),
                activo: "true",
-               planEstudio: "",
+               planEstudio: categorySelected,
                unidadNegocioId: 4,
                profesorId: "",
                // profesorId: professorSelected,
@@ -64,6 +70,7 @@ export const TabOneOnDemand = () => {
           }
           onResetForm();
           setProfessorSelected("");
+          setCategorySelected('')
           setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
           coursesChangers.addData(res.data);
      };
@@ -98,6 +105,14 @@ export const TabOneOnDemand = () => {
                               handleSelect={handleProfessor}
                               options={professorsList}
                               label="Profesor"
+                         />
+                    </Grid>
+                    <Grid item xs={12} sm={7} sx={{ m: 1 }}>
+                         <SelectOptions
+                              value={categorySelected}
+                              handleSelect={handleCategory}
+                              options={initialCategory}
+                              label="Categoria"
                          />
                     </Grid>
                </Grid>

@@ -1,9 +1,11 @@
 import { Box } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useEditData } from "../../hooks";
 import { deleteCourse, getCourseById, updateCourse } from "../../utils";
 import {
      Datagrid,
+     DataGridWithModal,
+     EditCourseModal,
      ModalAction,
      ModalEdit,
      PageHeader,
@@ -15,26 +17,21 @@ import { processCourse } from "../helper";
 export const CoursesPage = () => {
      const { courses, coursesChangers } = useContext(DataContext);
      const { isModalOpen, handleModal, id } = useContext(ModalContext);
+     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+     const [onEditId, setOnEditId] = useState('')
 
-     const {
-          isModalUpdateOpen,
-          isSnackBarEditOpen,
-          handleAnswer,
-          handleSnackBar,
-          commitHandler, 
-          stopHandler,
-          handleCloseModal,
-     } = useEditData(
-          coursesChangers.updateData,
-          false,
-          processCourse,
-          getCourseById,
-          updateCourse
-     );
+     const openModal = ({id}) => {
+          setIsModalEditOpen(true);
+          setOnEditId(id)
+     };
+
+     const closeModal = () => {
+          setIsModalEditOpen(false);
+     };
 
      const handleDelete = async () => {
-          const { ok } = await deleteCourse(id)
-          if(!ok) return
+          const { ok } = await deleteCourse(id);
+          if (!ok) return;
           coursesChangers.deleteData(id);
      };
      return (
@@ -45,30 +42,21 @@ export const CoursesPage = () => {
                     handleAction={handleDelete}
                     title="¿Estas seguro de eliminar este curso?"
                />
-               <ModalEdit
-                    isModalOpen={isModalUpdateOpen}
-                    handleClose={handleCloseModal}
-                    handleAction={handleAnswer}
-                    title="¿Estas seguro de editar este curso?"
-               />
-               <PageHeader
-                    title="Cursos"
-                    buttonTitle="Agregar Curso"
-                    url={"/courses/ingresar"}
-               />
+               <PageHeader title="Cursos" buttonTitle="Agregar Curso" url={"/courses/ingresar"} />
                <Box height={"100vh"} sx={{ pr: 2 }}>
-                    <Datagrid
+                    <DataGridWithModal
                          rows={courses.rows}
                          columns={courses.columns}
-                         updateHandler={commitHandler}
-                         stopHandler={stopHandler}
+                         handleCell={openModal}
+                         onChangeElements={()=> {}}
                     />
                </Box>
-               <SnackBarComponent
+               <EditCourseModal isModalOpen={isModalEditOpen} closeModal={closeModal} id={onEditId}  />
+               {/* <SnackBarComponent
                     isSnackBarOpen={isSnackBarEditOpen}
                     handleSnackbar={handleSnackBar}
                     message="Curso editado correctamente"
-               />
+               /> */}
           </>
      );
 };

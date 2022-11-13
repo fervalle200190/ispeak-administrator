@@ -174,7 +174,8 @@ export const DataProvider = ({ children }) => {
                     supportMaterialsChangers,
                     getSignUps,
                     signUpsOnDemandChangers,
-                    signUpsChangers
+                    signUpsChangers,
+                    getAttends
                }}
           >
                {children}

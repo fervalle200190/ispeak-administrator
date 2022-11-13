@@ -39,35 +39,47 @@ export const signUpType = [
 
 export const initialClassOption = [
      {
-          label: 'Clase 1',
-          value: 'Clase 1'
+          label: "Clase 1",
+          value: "1",
      },
      {
-          label: 'Clase 2',
-          value: 'Clase 2'
+          label: "Clase 2",
+          value: "2",
      },
      {
-          label: 'Clase 3',
-          value: 'Clase 3'
+          label: "Clase 3",
+          value: "3",
      },
      {
-          label: 'Clase 4',
-          value: 'Clase 4'
+          label: "Clase 4",
+          value: "4",
      },
      {
-          label: 'Clase 5',
-          value: 'Clase 5'
+          label: "Clase 5",
+          value: "5",
      },
      {
-          label: 'Clase 6',
-          value: 'Clase 6'
+          label: "Clase 6",
+          value: "6",
      },
      {
-          label: 'Clase 7',
-          value: 'Clase 7'
+          label: "Clase 7",
+          value: "7",
      },
      {
-          label: 'Clase 8',
-          value: 'Clase 8'
+          label: "Clase 8",
+          value: "8",
      },
-]
+];
+
+export const initialCategory = [
+     { label: "Junior", value: "Junior" },
+     { label: "Junior plus", value: "Junior plus" },
+     { label: "Middle", value: "Middle" },
+     { label: "Middle plus", value: "Middle plus" },
+     { label: "Senior", value: "Senior" },
+     { label: "Senior plus", value: "Senior plus" },
+     { label: "Expert", value: "Expert" },
+     { label: "Expert plus", value: "Expert plus" },
+     { label: "Obligatorio", value: "Obligatorio" },
+];
