@@ -83,3 +83,8 @@ export const initialCategory = [
      { label: "Expert plus", value: "Expert plus" },
      { label: "Obligatorio", value: "Obligatorio" },
 ];
+
+export const asistanceList = [
+     { label: "Presente", value: true },
+     { label: "Ausente", value: false },
+];

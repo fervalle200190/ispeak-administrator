@@ -6,7 +6,7 @@ import { getModulesByCourse, postAttendance } from "../../utils";
 import { PageHeader, SelectOptions, SnackBarComponent } from "../components";
 import { DataContext } from "../context";
 import { processAttendance } from "../helper";
-import { initialClassOption } from "../utils";
+import { asistanceList, initialClassOption } from "../utils";
 
 const initialForm = {
      observaciones: "",
@@ -19,6 +19,7 @@ const initialSelected = {
      studentSelected: "",
      courseSelected: "",
      classSelected: "",
+     attendanceSelected: "",
 };
 
 const initialSnackBar = {
@@ -79,6 +80,7 @@ export const AddAttendancePage = () => {
                valueSelected.moduloSelected === "" ||
                valueSelected.profesorSelected === "" ||
                valueSelected.studentSelected === "" ||
+               valueSelected.attendanceSelected === "" ||
                observaciones === "" ||
                date === ""
           ) {
@@ -86,7 +88,7 @@ export const AddAttendancePage = () => {
                return;
           }
           const res = await postAttendance(
-               processAttendance({ ...valueSelected, observaciones, date })
+               processAttendance({ ...valueSelected, observaciones, date }, false)
           );
           if (!res.ok) {
                setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
@@ -97,9 +99,9 @@ export const AddAttendancePage = () => {
                isSnackBarOpen: true,
                message: "Asistencia creada exitosamente!!!",
           });
-          onResetForm()
-          setValueSelected(initialSelected)
-          getAttends()
+          onResetForm();
+          setValueSelected(initialSelected);
+          getAttends();
      };
 
      return (
@@ -143,6 +145,14 @@ export const AddAttendancePage = () => {
                                    label={"Modulo"}
                                    value={valueSelected.moduloSelected}
                                    handleSelect={(e) => onValueSelected(e, "moduloSelected")}
+                              />
+                         </Grid>
+                         <Grid item xs={12} sx={{ m: 1 }}>
+                              <SelectOptions
+                                   options={asistanceList}
+                                   label={"Asistió?"}
+                                   value={valueSelected.attendanceSelected}
+                                   handleSelect={(e) => onValueSelected(e, "attendanceSelected")}
                               />
                          </Grid>
                          <Grid item xs={12} sx={{ m: 1 }}>

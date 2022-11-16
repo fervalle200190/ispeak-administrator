@@ -14,7 +14,9 @@ import {
      AddSupportMaterialPage,
      AdministratorPage,
      AttendsPage,
+     ProgramsPage,
      CoursesPage,
+     PaymentsPage,
      DashboardPage,
      ProfessorPage,
      SignUpCoursesPage,
@@ -23,7 +25,6 @@ import {
      StudyMaterialPage,
      SupportMaterialPage,
 } from "../pages";
-import { ProgramsPage } from "../pages/ProgramsPage";
 
 export const IspeakRoutes = () => {
      return (
@@ -40,6 +41,7 @@ export const IspeakRoutes = () => {
                               <Route path='programs/ingresar' element={<AddProgramsPage />} />
                               <Route path="courses" element={<CoursesPage />} />
                               <Route path='courses/ingresar' element={<AddCoursesPage />} />
+                              <Route path='payments' element={<PaymentsPage/>} />
                               <Route path='study-material' element={<StudyMaterialPage />} />
                               <Route path='study-material/ingresar' element={<AddStudyMaterialPage />} />
                               <Route path='support-material' element={<SupportMaterialPage />} />

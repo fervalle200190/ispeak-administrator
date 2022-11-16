@@ -27,7 +27,7 @@ export const TabOneOnDemand = () => {
      const [professorsList, setProfessorsList] = useState([]);
      const { formState, onInputChange, onResetForm } = useForm(initialForm);
      const [professorSelected, setProfessorSelected] = useState("");
-     const [categorySelected, setCategorySelected] = useState('')
+     const [categorySelected, setCategorySelected] = useState("");
      const { professors, coursesChangers } = useContext(DataContext);
      const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
 
@@ -42,13 +42,13 @@ export const TabOneOnDemand = () => {
           setProfessorSelected(e.target.value);
      };
 
-     const handleCategory = (e)=> {
-          setCategorySelected(e.target.value)
-     }
+     const handleCategory = (e) => {
+          setCategorySelected(e.target.value);
+     };
 
      const handleSubmit = async (e) => {
           e.preventDefault();
-          if (formState.nombre === "" || professorSelected === "" || categorySelected === '') {
+          if (formState.nombre === "" || categorySelected === "") {
                setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
@@ -60,8 +60,6 @@ export const TabOneOnDemand = () => {
                activo: "true",
                planEstudio: categorySelected,
                unidadNegocioId: 4,
-               profesorId: "",
-               // profesorId: professorSelected,
           };
           const res = await postCourse(JSON.stringify(dataToSend));
           if (!res.ok) {
@@ -70,7 +68,7 @@ export const TabOneOnDemand = () => {
           }
           onResetForm();
           setProfessorSelected("");
-          setCategorySelected('')
+          setCategorySelected("");
           setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
           coursesChangers.addData(res.data);
      };
@@ -99,14 +97,14 @@ export const TabOneOnDemand = () => {
                               }}
                          />
                     </Grid>
-                    <Grid item xs={12} sm={7} sx={{ m: 1 }}>
+                    {/* <Grid item xs={12} sm={7} sx={{ m: 1 }}>
                          <SelectOptions
                               value={professorSelected}
                               handleSelect={handleProfessor}
                               options={professorsList}
                               label="Profesor"
                          />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12} sm={7} sx={{ m: 1 }}>
                          <SelectOptions
                               value={categorySelected}
@@ -115,10 +113,13 @@ export const TabOneOnDemand = () => {
                               label="Categoria"
                          />
                     </Grid>
+                    <Grid item xs={12} sm={7} sx={{ m: 1 }}>
+                         <Button variant="outlined" type="submit" size="large">
+                              Agregar
+                         </Button>
+                    </Grid>
                </Grid>
-               <Button variant="outlined" type="submit" size="large" sx={{ mt: 3 }}>
-                    Agregar
-               </Button>
+
                <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </Box>
      );

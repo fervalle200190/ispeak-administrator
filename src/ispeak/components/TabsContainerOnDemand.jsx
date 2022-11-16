@@ -2,6 +2,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import { ModalTabsProvider } from "../context";
 import { TabOneOnDemand } from "./TabOneOnDemand";
+import { TabOneProfessors } from "./TabOneProfessors";
 import { TabPanel } from "./TabPanel";
 import { TabsTwoOnDemand } from "./TabsTwoOnDemand";
 
@@ -27,6 +28,7 @@ export const TabsContainerOnDemand = () => {
                     </Box>
                     <TabPanel value={value} index={0}>
                          <TabOneOnDemand />
+                         <TabOneProfessors />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                          <TabsTwoOnDemand />

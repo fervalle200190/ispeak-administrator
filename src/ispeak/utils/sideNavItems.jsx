@@ -33,51 +33,56 @@ export const sideNavItems = [
      {
           title: "Programas",
           icon: <CloudDoneRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/programs'
+          url: "/programs",
      },
      {
           title: "Cursos",
           icon: <VideoSettingsRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/courses'
+          url: "/courses",
+     },
+     {
+          title: "Pagos",
+          icon: <VideoSettingsRounded sx={{ fontSize: "20px", mr: 2 }} />,
+          url: "/payments",
      },
      {
           title: "Material Estudio",
           icon: <FeaturedVideoRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/study-material'
+          url: "/study-material",
      },
      {
           title: "Material Refuerzo",
           icon: <VideoLabelRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/support-material'
+          url: "/support-material",
      },
      {
           title: "Inscripciones de Cursos",
           icon: <OpenInBrowserRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/sign-courses'
+          url: "/sign-courses",
      },
      {
           title: "Inscrip. Cursos onDemand",
           icon: <VideoCameraFrontRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/sign-ondemand'
+          url: "/sign-ondemand",
      },
      {
           title: "Asistencias",
           icon: <RecentActorsRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/attendance'
+          url: "/attendance",
      },
      {
           title: "Informes de Progreso",
           icon: <SummarizeRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/progress'
+          url: "/progress",
      },
      {
           title: "Administradores",
           icon: <AdminPanelSettingsRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/administrators'
+          url: "/administrators",
      },
      {
           title: "Cerrar Sesión",
           icon: <MeetingRoomRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: '/login',
+          url: "/login",
      },
 ];

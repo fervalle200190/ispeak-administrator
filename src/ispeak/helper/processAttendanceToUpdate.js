@@ -1,4 +1,4 @@
-export const processAttendance = ({
+export const processAttendanceToUpdate = ({
      profesorSelected,
      moduloSelected,
      studentSelected,
@@ -6,9 +6,12 @@ export const processAttendance = ({
      classSelected,
      observaciones,
      attendanceSelected,
-     date
+     fechaCarga,
+     id,
+     date,
 }) => {
      return {
+          id,
           alumnoId: studentSelected,
           cursoId: courseSelected,
           moduloId: moduloSelected,
@@ -17,7 +20,7 @@ export const processAttendance = ({
           presente: attendanceSelected,
           reprogramar: "true",
           observaciones,
-          fechaCarga: new Date().toISOString(),
+          fechaCarga,
           clase: classSelected,
      };
 };

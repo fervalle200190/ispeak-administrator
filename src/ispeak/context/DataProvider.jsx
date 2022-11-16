@@ -15,6 +15,7 @@ import {
      useChangeDataPrograms,
      useChangeData,
      useChangeDataAdmin,
+     usePayments,
 } from "../../hooks";
 import {
      getAllAdmin,
@@ -26,6 +27,7 @@ import {
      getAllStudyMaterial,
      getAllSupportMaterial,
      getAllUsers,
+     getPaymentList,
 } from "../../utils";
 import { changeCourses, changeStudyMaterials } from "../helper";
 import { DataContext } from "./DataContext";
@@ -37,7 +39,8 @@ export const DataProvider = ({ children }) => {
      const [professors, setProfessors] = useState(initialState);
      const [programs, setPrograms] = useState(initialState);
      const [courses, setCourses] = useState(initialState);
-     const [coursesRaw, setCoursesRaw] = useState([])
+     const [payments, setPayments] = useState(initialState);
+     const [coursesRaw, setCoursesRaw] = useState([]);
      const [studyMaterial, setStudyMaterial] = useState(initialState);
      const [supportMaterial, setSupportMaterial] = useState(initialState);
      const [signUp, setSignUp] = useState(initialState);
@@ -60,7 +63,7 @@ export const DataProvider = ({ children }) => {
 
      const getCourses = async () => {
           const courses = await getAllCourses();
-          setCoursesRaw(courses)
+          setCoursesRaw(courses);
           const { columns, rows } = useCourses(courses);
           setCourses({ columns, rows });
      };
@@ -69,6 +72,12 @@ export const DataProvider = ({ children }) => {
           const studyMaterials = await getAllStudyMaterial();
           const { columns, rows } = useStudyMaterials(studyMaterials);
           setStudyMaterial({ columns, rows });
+     };
+
+     const getPayments = async () => {
+          const { payments } = await getPaymentList();
+          const { columns, rows } = usePayments(payments);
+          setPayments({ columns, rows });
      };
 
      const getSupportMaterials = async () => {
@@ -101,32 +110,36 @@ export const DataProvider = ({ children }) => {
           setAdmin({ columns, rows });
      };
 
-     const { updateStudents, deleteStudent, addStudent } = useChangeDataStudent(
-          {
-               setStudents,
-               students,
-          }
+     const { updateStudents, deleteStudent, addStudent } = useChangeDataStudent({
+          setStudents,
+          students,
+     });
+
+     const { updateProfessors, deleteProfessor, addProfessor } = useChangeDataProfessor({
+          setProfessors,
+          professors,
+     });
+
+     const { addAdmin, deleteAdmin, updateAdmin } = useChangeDataAdmin(admin, setAdmin);
+
+     const { updatePrograms, deletePrograms, addPrograms } = useChangeDataPrograms({
+          setPrograms,
+          programs,
+     });
+
+     const coursesChangers = useChangeData(courses, setCourses, changeCourses);
+
+     const studyMaterialsChangers = useChangeData(
+          studyMaterial,
+          setStudyMaterial,
+          changeStudyMaterials
      );
 
-     const { updateProfessors, deleteProfessor, addProfessor } =
-          useChangeDataProfessor({
-               setProfessors,
-               professors,
-          });
-     
-     const { addAdmin, deleteAdmin, updateAdmin } = useChangeDataAdmin(admin, setAdmin)
+     const supportMaterialsChangers = useChangeData(supportMaterial, setSupportMaterial);
 
-     const { updatePrograms, deletePrograms, addPrograms } = useChangeDataPrograms({setPrograms, programs})
+     const signUpsOnDemandChangers = useChangeData(signUpOnDemand, setSignUpOnDemand);
 
-     const coursesChangers = useChangeData(courses, setCourses, changeCourses)
-
-     const studyMaterialsChangers = useChangeData(studyMaterial, setStudyMaterial, changeStudyMaterials)
-
-     const supportMaterialsChangers = useChangeData(supportMaterial, setSupportMaterial)
-
-     const signUpsOnDemandChangers = useChangeData(signUpOnDemand, setSignUpOnDemand)
-
-     const signUpsChangers = useChangeData(signUp, setSignUp)
+     const signUpsChangers = useChangeData(signUp, setSignUp);
 
      useEffect(() => {
           getStudentsAndProfessors();
@@ -138,6 +151,7 @@ export const DataProvider = ({ children }) => {
           getSignUpsOnDemand();
           getAttends();
           getAdmins();
+          getPayments();
      }, []);
 
      return (
@@ -157,6 +171,7 @@ export const DataProvider = ({ children }) => {
                     deletePrograms,
                     addPrograms,
                     courses,
+                    payments,
                     updateAdmin,
                     addAdmin,
                     deleteAdmin,
@@ -175,7 +190,7 @@ export const DataProvider = ({ children }) => {
                     getSignUps,
                     signUpsOnDemandChangers,
                     signUpsChangers,
-                    getAttends
+                    getAttends,
                }}
           >
                {children}

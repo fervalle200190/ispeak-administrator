@@ -1,10 +1,11 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useForm, useParsedData } from "../../hooks";
-import { getAttendanceById } from "../../utils";
+import { getAttendanceById, getModulesByCourse, updateAttendance } from "../../utils";
 import { DataContext } from "../context";
+import { processAttendanceToUpdate } from "../helper/processAttendanceToUpdate";
 import { ModalEditLayout } from "../layout/ModalEditLayout";
-import { initialClassOption } from "../utils";
+import { asistanceList, initialClassOption } from "../utils";
 import { SelectOptions } from "./SelectOptions";
 import { SnackBarComponent } from "./SnackBarComponent";
 
@@ -19,12 +20,13 @@ const initialSelected = {
      studentSelected: "",
      courseSelected: "",
      classSelected: "",
+     attendanceSelected: "",
 };
 
 const initialSnackBar = {
      isSnackBarOpen: false,
      severity: "success",
-     message: "El material de estudio ha sido editado exitosamente!!",
+     message: "La Asistencia ha sido editada exitosamente!!",
 };
 
 const errorSnackbar = {
@@ -40,7 +42,8 @@ export const EditAttendModal = ({ id, closeModal, isModalOpen }) => {
           students,
           professors,
      });
-     const { observaciones, date, onInputChange, onResetForm } = useForm(initialForm);
+     const { observaciones, date, onInputChange, onResetForm, setFormState, formState } =
+          useForm(initialForm);
      const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const [valueSelected, setValueSelected] = useState(initialSelected);
      const [isLoading, setIsLoading] = useState(false);
@@ -62,8 +65,21 @@ export const EditAttendModal = ({ id, closeModal, isModalOpen }) => {
      };
 
      const getRawAttend = async () => {
-          const res = await getAttendanceById(id);
-          console.log(res);
+          const { data } = await getAttendanceById(id);
+          setRawAttend(data);
+          setFormState({
+               ...formState,
+               observaciones: data.observaciones,
+               date: data.fecha.slice(0, -9),
+          });
+          setValueSelected({
+               studentSelected: data.alumnoId,
+               courseSelected: data.cursoId,
+               profesorSelected: data.profesorId,
+               moduloSelected: data.moduloId,
+               classSelected: data.clase,
+               attendanceSelected: data.presente,
+          });
      };
 
      const getLists = async () => {
@@ -75,7 +91,7 @@ export const EditAttendModal = ({ id, closeModal, isModalOpen }) => {
 
      useEffect(() => {
           if (id === "") return;
-          getRawAttend()
+          getRawAttend();
      }, [id]);
 
      useEffect(() => {
@@ -83,23 +99,30 @@ export const EditAttendModal = ({ id, closeModal, isModalOpen }) => {
           getLists();
      }, [valueSelected.courseSelected]);
 
+     useEffect(() => {
+          return () => {
+               setValueSelected(initialSelected);
+          };
+     }, []);
+
      const onSubmit = async (e) => {
           e.preventDefault();
           if (
-               valueSelected.classSelected === "" ||
-               valueSelected.courseSelected === "" ||
-               valueSelected.moduloSelected === "" ||
-               valueSelected.profesorSelected === "" ||
-               valueSelected.studentSelected === "" ||
-               observaciones === "" ||
-               date === ""
+               valueSelected.classSelected === rawAttend.clase &&
+               valueSelected.courseSelected === rawAttend.cursoId &&
+               valueSelected.moduloSelected === rawAttend.moduloId &&
+               valueSelected.profesorSelected === rawAttend.profesorId &&
+               valueSelected.studentSelected === rawAttend.cursoId &&
+               valueSelected.attendanceSelected === rawAttend.presente &&
+               observaciones === rawAttend.observaciones &&
+               date === rawAttend.fecha.slice(0, -9)
           ) {
-               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor cambia algun dato" });
                return;
           }
           setIsLoading(true);
-          const res = await postAttendance(
-               processAttendance({ ...valueSelected, observaciones, date })
+          const res = await updateAttendance(
+               processAttendanceToUpdate({ ...valueSelected, ...rawAttend, observaciones, date })
           );
           if (!res.ok) {
                setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
@@ -110,7 +133,6 @@ export const EditAttendModal = ({ id, closeModal, isModalOpen }) => {
           setSnackBarInfo({
                ...initialSnackBar,
                isSnackBarOpen: true,
-               message: "Asistencia creada exitosamente!!!",
           });
           onResetForm();
           setValueSelected(initialSelected);
@@ -130,7 +152,11 @@ export const EditAttendModal = ({ id, closeModal, isModalOpen }) => {
                               <Grid item xs={12} sx={{ m: 1 }}>
                                    <SelectOptions
                                         options={studentsParsed}
-                                        value={valueSelected.studentSelected}
+                                        value={
+                                             studentsParsed.length <= 0
+                                                  ? ""
+                                                  : valueSelected.studentSelected
+                                        }
                                         label={"Alumno"}
                                         handleSelect={(e) => onValueSelected(e, "studentSelected")}
                                    />
@@ -138,7 +164,11 @@ export const EditAttendModal = ({ id, closeModal, isModalOpen }) => {
                               <Grid item xs={12} sx={{ m: 1 }}>
                                    <SelectOptions
                                         options={coursesParsed}
-                                        value={valueSelected.courseSelected}
+                                        value={
+                                             coursesParsed.length <= 0
+                                                  ? ""
+                                                  : valueSelected.courseSelected
+                                        }
                                         handleSelect={(e) => onValueSelected(e, "courseSelected")}
                                         label={"Curso"}
                                    />
@@ -147,7 +177,11 @@ export const EditAttendModal = ({ id, closeModal, isModalOpen }) => {
                                    <SelectOptions
                                         options={professorsParsed}
                                         label={"Profesor"}
-                                        value={valueSelected.profesorSelected}
+                                        value={
+                                             professorsParsed.length <= 0
+                                                  ? ""
+                                                  : valueSelected.profesorSelected
+                                        }
                                         handleSelect={(e) => onValueSelected(e, "profesorSelected")}
                                    />
                               </Grid>
@@ -155,8 +189,26 @@ export const EditAttendModal = ({ id, closeModal, isModalOpen }) => {
                                    <SelectOptions
                                         options={selectsData.moduleList}
                                         label={"Modulo"}
-                                        value={valueSelected.moduloSelected}
+                                        value={
+                                             selectsData.moduleList.length <= 0
+                                                  ? ""
+                                                  : valueSelected.moduloSelected
+                                        }
                                         handleSelect={(e) => onValueSelected(e, "moduloSelected")}
+                                   />
+                              </Grid>
+                              <Grid item xs={12} sx={{ m: 1 }}>
+                                   <SelectOptions
+                                        options={asistanceList}
+                                        label={"Asistió?"}
+                                        value={
+                                             asistanceList.length <= 0
+                                                  ? ""
+                                                  : valueSelected.attendanceSelected
+                                        }
+                                        handleSelect={(e) =>
+                                             onValueSelected(e, "attendanceSelected")
+                                        }
                                    />
                               </Grid>
                               <Grid item xs={12} sx={{ m: 1 }}>
