@@ -53,6 +53,7 @@ export const DataProvider = ({ children }) => {
 
      const getStudentsAndProfessors = async () => {
           const users = await getAllUsers();
+          console.log(users)
           const { columns, rows } = useStudents(users);
           const professors = useProfessors(users);
           setStudents({ columns, rows });

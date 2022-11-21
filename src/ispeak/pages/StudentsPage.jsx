@@ -46,7 +46,7 @@ export const StudentsPage = () => {
                     buttonTitle={"Agregar Alumno"}
                     url={"/students/ingresar"}
                />
-               <Box height={"100vh"} sx={{ pr: 2 }}>
+               <Box height={"650px"} sx={{ pr: 2 }}>
                     <Datagrid
                          rows={students.rows}
                          columns={students.columns}

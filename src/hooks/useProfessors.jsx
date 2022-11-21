@@ -38,8 +38,8 @@ export const useProfessors = (users) => {
      ];
 
      const rows = users
-          .filter((user) => user.rol === "Profesor")
-          .map((user) => ({
+          .filter(({user}) => user.rol === "Profesor")
+          .map(({user}) => ({
                id: user.id,
                nameAndLastName: user.nombre,
                email: user.email,
