@@ -6,7 +6,7 @@ import { DataContext } from "../context";
 const initialModal = { isModalOpen: false, modalData: {} };
 
 export const TestsPage = () => {
-     const { test } = useContext(DataContext);
+     const { test, getTests } = useContext(DataContext);
      const [onModalInfo, setOnModalInfo] = useState(initialModal);
 
      const openModal = ({ id }) => {
@@ -27,7 +27,11 @@ export const TestsPage = () => {
                          onChangeElements={() => {}}
                     />
                </Box>
-               <EditTestModal onModalInfo={onModalInfo} closeModal={closeModal} />
+               <EditTestModal
+                    onModalInfo={onModalInfo}
+                    closeModal={closeModal}
+                    getTests={getTests}
+               />
           </>
      );
 };

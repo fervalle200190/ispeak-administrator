@@ -202,6 +202,7 @@ export const DataProvider = ({ children }) => {
                     signUpsOnDemandChangers,
                     signUpsChangers,
                     getAttends,
+                    getTests
                }}
           >
                {children}

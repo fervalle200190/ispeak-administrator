@@ -17,7 +17,7 @@ const errorSnackbar = {
      message: "Ha ocurrido un error",
 };
 
-export const EditTestModal = ({ onModalInfo, closeModal }) => {
+export const EditTestModal = ({ onModalInfo, closeModal, getTests }) => {
      const { email, name, lastname, score: scoreOld } = onModalInfo.modalData;
      const { score, onInputChange, setFormState } = useForm({ score: scoreOld });
      const [isLoading, setIsLoading] = useState(false);
@@ -42,11 +42,14 @@ export const EditTestModal = ({ onModalInfo, closeModal }) => {
                     message: "Por favor cambia la nota",
                });
           }
+          setIsLoading(true)
           const { ok, data, errorMessage } = await updateTest({ ...onModalInfo.modalData, score });
+          setIsLoading(false)
           if (!ok) {
                return setSnackBarInfo({ ...errorSnackbar, message: errorMessage });
           }
           setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
+          getTests()
      };
      return (
           <>
