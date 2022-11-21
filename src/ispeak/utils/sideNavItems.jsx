@@ -12,6 +12,8 @@ import {
      AdminPanelSettingsRounded,
      MeetingRoomRounded,
      VideoCameraFrontRounded,
+     PaidRounded,
+     QuizRounded,
 } from "@mui/icons-material";
 
 export const sideNavItems = [
@@ -36,14 +38,19 @@ export const sideNavItems = [
           url: "/programs",
      },
      {
+          title: "Pagos",
+          icon: <PaidRounded sx={{ fontSize: "20px", mr: 2 }} />,
+          url: "/payments",
+     },
+     {
+          title: "Resultados de test",
+          icon: <QuizRounded sx={{ fontSize: "20px", mr: 2 }} />,
+          url: "/tests",
+     },
+     {
           title: "Cursos",
           icon: <VideoSettingsRounded sx={{ fontSize: "20px", mr: 2 }} />,
           url: "/courses",
-     },
-     {
-          title: "Pagos",
-          icon: <VideoSettingsRounded sx={{ fontSize: "20px", mr: 2 }} />,
-          url: "/payments",
      },
      {
           title: "Material Estudio",

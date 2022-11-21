@@ -1,8 +1,11 @@
 import { apiKey, id, ispeakAPI } from "./IspeakAPI";
 
-export const postProfessorsByCourse = async (list) => {
+export const updatePayment = async (payment) => {
      try {
-          const data = await ispeakAPI.post(`/Cursos/assignedTeachers/${apiKey}/${id}`, list);
+          const { data } = await ispeakAPI.put(
+               `/PasarelaMercadoPago/updatePayment/${apiKey}/${id}`,
+               payment
+          );
           return {
                ok: true,
                data,

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useContext } from "react";
 import { useDeleteAll } from "../../hooks";
 import { deleteStudyMaterial } from "../../utils";
@@ -26,7 +26,10 @@ const errorSnackbar = {
 
 export const StudyMaterialPage = () => {
      const { studyMaterial, studyMaterialsChangers } = useContext(DataContext);
-     const { elementsToDelete, onChangeElements, onDeleteAll } = useDeleteAll(studyMaterialsChangers.onDeleteSeveral, deleteStudyMaterial)
+     const { elementsToDelete, onChangeElements, onDeleteAll } = useDeleteAll(
+          studyMaterialsChangers.onDeleteSeveral,
+          deleteStudyMaterial
+     );
      const { isModalOpen: isModalDeleteOpen, handleModal, id } = useContext(ModalContext);
      const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,6 +41,13 @@ export const StudyMaterialPage = () => {
                isSnackBarOpen: false,
           });
      };
+
+     const maxClass = useMemo(() => {
+          const orderStudy = studyMaterial?.rows?.sort((a, b) =>
+               parseInt(a.class.slice(6, 8).trim()) < parseInt(b.class.slice(6, 8).trim()) ? 1 : -1
+          );
+          return orderStudy.length >= 0 ? orderStudy[0]?.class?.slice(6, 8).trim() : 3;
+     }, [studyMaterial]);
 
      const handleDelete = async () => {
           const { ok, errorMessage } = await deleteStudyMaterial(id);
@@ -79,7 +89,6 @@ export const StudyMaterialPage = () => {
                          rows={studyMaterial.rows}
                          handleCell={openModal}
                          onChangeElements={onChangeElements}
-                         
                     />
                </Box>
                <EditStudyMaterialModal
@@ -87,7 +96,7 @@ export const StudyMaterialPage = () => {
                     handleModal={closeModal}
                     id={onEditId}
                     studyMaterialsChangers={studyMaterialsChangers}
-                    totalStudyMaterial={studyMaterial.rows.length}
+                    totalStudyMaterial={maxClass}
                />
                <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </>

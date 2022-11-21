@@ -1,6 +1,7 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import { ModalTabsProvider } from "../context";
+import { TabOneCourses } from "./TabOneCourses";
 import { TabOneOnDemand } from "./TabOneOnDemand";
 import { TabOneProfessors } from "./TabOneProfessors";
 import { TabPanel } from "./TabPanel";
@@ -16,19 +17,14 @@ export const TabsContainerOnDemand = () => {
                <Box sx={{ pr: 2 }}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                          <Tabs value={value} onChange={handleChange}>
-                              <Tab
-                                   label="Datos del curso"
-                                   sx={{ color: "primary.main" }}
-                              />
-                              <Tab
-                                   label="Modulos"
-                                   sx={{ color: "primary.main" }}
-                              />
+                              <Tab label="Datos del curso" sx={{ color: "primary.main" }} />
+                              <Tab label="Modulos" sx={{ color: "primary.main" }} />
                          </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
                          <TabOneOnDemand />
                          <TabOneProfessors />
+                         <TabOneCourses />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                          <TabsTwoOnDemand />

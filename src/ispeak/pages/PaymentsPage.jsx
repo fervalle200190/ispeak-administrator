@@ -6,9 +6,11 @@ import { DataContext } from "../context";
 export const PaymentsPage = () => {
      const { payments } = useContext(DataContext);
      const [isModalOpen, setIsModalOpen] = useState(false);
+     const [onEditId, setOnEditId] = useState("");
 
-     const openModal = () => {
+     const openModal = ({ id }) => {
           setIsModalOpen(true);
+          setOnEditId(id);
      };
 
      const closeModal = () => {
@@ -22,9 +24,14 @@ export const PaymentsPage = () => {
                          columns={payments.columns}
                          rows={payments.rows}
                          handleCell={openModal}
+                         onChangeElements={() => {}}
                     />
                </Box>
-               <EditPaymentModal isModalOpen={isModalOpen} closeModal={closeModal} />
+               <EditPaymentModal
+                    isModalOpen={isModalOpen}
+                    closeModal={closeModal}
+                    onEditId={onEditId}
+               />
           </>
      );
 };

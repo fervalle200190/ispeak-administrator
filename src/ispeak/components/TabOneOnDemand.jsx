@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "../../hooks";
 import { postCourse } from "../../utils";
@@ -84,6 +84,9 @@ export const TabOneOnDemand = () => {
 
      return (
           <Box component="form" sx={{ width: "100%" }} onSubmit={handleSubmit}>
+               <Typography variant="h6">
+                    Crear curso
+               </Typography>
                <Grid container>
                     <Grid item xs={12} sm={7} sx={{ m: 1 }}>
                          <TextField

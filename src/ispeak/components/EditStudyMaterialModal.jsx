@@ -40,10 +40,12 @@ export const EditStudyMaterialModal = ({
      const [isLoading, setIsLoading] = useState(false);
 
      const classStudy = useMemo(() => {
-          return [...Array(totalStudyMaterial)].map((item, i) => ({
-               label: `Clase ${i + 1}`,
-               value: `Clase ${i + 1}`,
-          }));
+          return [...Array(totalStudyMaterial ? parseInt(totalStudyMaterial) : 0)].map(
+               (item, i) => ({
+                    label: `Clase ${i + 1}`,
+                    value: `${i + 1}`,
+               })
+          );
      }, [totalStudyMaterial]);
 
      const closeSnackbar = () => {
@@ -62,7 +64,7 @@ export const EditStudyMaterialModal = ({
           setMaterialData(material);
           handleCourse({ target: { value: material.cursoId } });
           handleModule({ target: { value: material.moduloId } });
-          handleClaseSelected({ target: { value: `Clase ${material.claseNumero}` } });
+          handleClaseSelected({ target: { value: material.claseNumero } });
           setFormState({ nombre: material.nombre, linkVideo: material.linkVideo });
      };
 

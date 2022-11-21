@@ -1,7 +1,7 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useContext, useMemo, useState } from "react";
 import { useCourseSelect } from "../../hooks";
-import { postProfessorsByCourse } from "../../utils";
+import { postCourseByProfessors, postProfessorsByCourse } from "../../utils";
 import { DataContext } from "../context";
 import { SelectOptions } from "./SelectOptions";
 import { SnackBarComponent } from "./SnackBarComponent";
@@ -18,10 +18,10 @@ const errorSnackbar = {
      message: "Ha ocurrido un error",
 };
 
-export const TabOneProfessors = () => {
-     const { coursesList, courseSelected, handleCourse, resetCourse } = useCourseSelect();
+export const TabOneCourses = () => {
+     const { coursesList, courseSelected, handleCourse, resetCourse } = useCourseSelect([]);
      const { professors } = useContext(DataContext);
-     const [professorsSelected, setProfessorsSelected] = useState([]);
+     const [professorsSelected, setProfessorsSelected] = useState('');
      const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const [isLoading, setIsLoading] = useState(false);
 
@@ -42,13 +42,13 @@ export const TabOneProfessors = () => {
 
      const onSubmit = async (e) => {
           e.preventDefault();
-          if (courseSelected === "" || professorsSelected.length <= 0) {
+          if (courseSelected.length <= 0 || professorsSelected === '') {
                setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
                return;
           }
-          const res = await postProfessorsByCourse({
-               profesores: professorsSelected,
-               cursoid: courseSelected,
+          const res = await postCourseByProfessors({
+               profesorid: professorsSelected,
+               cursos: courseSelected,
           });
           if (!res.ok) {
                return setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
@@ -61,15 +61,16 @@ export const TabOneProfessors = () => {
      return (
           <>
                <Typography variant="h6" mt={4}>
-                    Agregar profesor
+                    Agregar Cursos a un profesor
                </Typography>
-               <Box component="form" onSubmit={onSubmit}>
+               <Box component="form" onSubmit={onSubmit} sx={{mb: 10}}>
                     <Grid container>
                          <Grid item xs={12} sm={7} sx={{ m: 1 }}>
                               <SelectOptions
                                    value={courseSelected}
                                    handleSelect={handleCourse}
                                    options={coursesList}
+                                   multiple={true}
                                    label="Categoria"
                               />
                          </Grid>
@@ -77,9 +78,8 @@ export const TabOneProfessors = () => {
                               <SelectOptions
                                    value={professorsSelected}
                                    handleSelect={handleProfessors}
-                                   multiple={true}
                                    options={professorsList}
-                                   label="Profesores"
+                                   label="Profesor"
                               />
                          </Grid>
                          <Grid item xs={12} sm={7} sx={{ m: 1 }}>

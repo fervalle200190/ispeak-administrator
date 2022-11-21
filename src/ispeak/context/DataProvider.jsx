@@ -16,6 +16,7 @@ import {
      useChangeData,
      useChangeDataAdmin,
      usePayments,
+     useTests,
 } from "../../hooks";
 import {
      getAllAdmin,
@@ -26,6 +27,7 @@ import {
      getAllSignUpOnDemand,
      getAllStudyMaterial,
      getAllSupportMaterial,
+     getAllTests,
      getAllUsers,
      getPaymentList,
 } from "../../utils";
@@ -47,6 +49,7 @@ export const DataProvider = ({ children }) => {
      const [signUpOnDemand, setSignUpOnDemand] = useState(initialState);
      const [attend, setAttend] = useState(initialState);
      const [admin, setAdmin] = useState(initialState);
+     const [test, setTest] = useState(initialState);
 
      const getStudentsAndProfessors = async () => {
           const users = await getAllUsers();
@@ -110,6 +113,12 @@ export const DataProvider = ({ children }) => {
           setAdmin({ columns, rows });
      };
 
+     const getTests = async () => {
+          const { tests } = await getAllTests();
+          const { columns, rows } = useTests(tests);
+          setTest({ columns, rows });
+     };
+
      const { updateStudents, deleteStudent, addStudent } = useChangeDataStudent({
           setStudents,
           students,
@@ -152,6 +161,7 @@ export const DataProvider = ({ children }) => {
           getAttends();
           getAdmins();
           getPayments();
+          getTests();
      }, []);
 
      return (
@@ -163,6 +173,7 @@ export const DataProvider = ({ children }) => {
                     deleteStudent,
                     addStudent,
                     professors,
+                    test,
                     updateProfessors,
                     deleteProfessor,
                     addProfessor,

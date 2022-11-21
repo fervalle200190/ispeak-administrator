@@ -15,7 +15,7 @@ const initialForm = {
 
 const initialSelected = {
      profesorSelected: "",
-     moduloSelected: "",
+     moduloSelected: [],
      studentSelected: "",
      courseSelected: "",
      classSelected: "",
@@ -77,7 +77,7 @@ export const AddAttendancePage = () => {
           if (
                valueSelected.classSelected === "" ||
                valueSelected.courseSelected === "" ||
-               valueSelected.moduloSelected === "" ||
+               valueSelected.moduloSelected.length <= 0 ||
                valueSelected.profesorSelected === "" ||
                valueSelected.studentSelected === "" ||
                valueSelected.attendanceSelected === "" ||
@@ -143,6 +143,7 @@ export const AddAttendancePage = () => {
                               <SelectOptions
                                    options={selectsData.moduleList}
                                    label={"Modulo"}
+                                   multiple={true}
                                    value={valueSelected.moduloSelected}
                                    handleSelect={(e) => onValueSelected(e, "moduloSelected")}
                               />

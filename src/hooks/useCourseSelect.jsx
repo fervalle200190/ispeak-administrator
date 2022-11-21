@@ -1,16 +1,16 @@
 import { useContext, useMemo, useState } from "react";
 import { DataContext } from "../ispeak/context";
 
-export const useCourseSelect = () => {
+export const useCourseSelect = (initialCourse = '') => {
      const { courses } = useContext(DataContext);
-     const [courseSelected, setCourseSelected] = useState("");
+     const [courseSelected, setCourseSelected] = useState(initialCourse);
 
      const handleCourse = (e) => {
           setCourseSelected(e.target.value);
      };
 
      const resetCourse = () => {
-          setCourseSelected("");
+          setCourseSelected(initialCourse);
      };
 
      const coursesList = useMemo(() => {

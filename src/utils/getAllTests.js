@@ -1,11 +1,11 @@
 import { apiKey, id, ispeakAPI } from "./IspeakAPI";
 
-export const postProfessorsByCourse = async (list) => {
+export const getAllTests = async () => {
      try {
-          const data = await ispeakAPI.post(`/Cursos/assignedTeachers/${apiKey}/${id}`, list);
+          const { data } = await ispeakAPI(`/Test/GetAll/${apiKey}/`);
           return {
                ok: true,
-               data,
+               tests: data,
           };
      } catch (error) {
           return {
