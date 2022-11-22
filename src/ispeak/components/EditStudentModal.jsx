@@ -138,7 +138,6 @@ export const EditStudentModal = ({ isModalOpen, closeModal, modalData }) => {
                               </Grid>
                               <Grid item xs={12} sx={{ my: 1 }}>
                                    <TextField
-                                        type={"password"}
                                         label="Contraseña"
                                         fullWidth
                                         variant="outlined"
