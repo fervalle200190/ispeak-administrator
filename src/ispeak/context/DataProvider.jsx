@@ -39,6 +39,7 @@ const initialState = { columns: [], rows: [] };
 export const DataProvider = ({ children }) => {
      const [students, setStudents] = useState(initialState);
      const [professors, setProfessors] = useState(initialState);
+     const [usersRaw, setUsersRaw] = useState([]);
      const [programs, setPrograms] = useState(initialState);
      const [courses, setCourses] = useState(initialState);
      const [payments, setPayments] = useState(initialState);
@@ -53,7 +54,7 @@ export const DataProvider = ({ children }) => {
 
      const getStudentsAndProfessors = async () => {
           const users = await getAllUsers();
-          console.log(users)
+          setUsersRaw(users);
           const { columns, rows } = useStudents(users);
           const professors = useProfessors(users);
           setStudents({ columns, rows });
@@ -168,6 +169,7 @@ export const DataProvider = ({ children }) => {
      return (
           <DataContext.Provider
                value={{
+                    usersRaw,
                     students,
                     setStudents,
                     updateStudents,
@@ -203,7 +205,8 @@ export const DataProvider = ({ children }) => {
                     signUpsOnDemandChangers,
                     signUpsChangers,
                     getAttends,
-                    getTests
+                    getTests,
+                    getStudentsAndProfessors,
                }}
           >
                {children}

@@ -7,9 +7,8 @@ export const useStudents = (users) => {
                field: "nameAndLastName",
                headerName: "Nombre y Apellido",
                width: 150,
-               editable: true,
           },
-          { field: "email", headerName: "E-mail", width: 250, editable: true },
+          { field: "email", headerName: "E-mail", width: 250 },
           { field: "city", headerName: "Ciudad", width: 150 },
           { field: "country", headerName: "País", width: 150 },
           { field: "courses", headerName: "Cursos", width: 700 },
@@ -33,7 +32,14 @@ export const useStudents = (users) => {
                email: user.email || "no info",
                city: user.ciudad || "no info",
                country: user.pais.nombre || "no info",
-               courses: cursos?.map((course) => course.nombre).join("-") || "no info",
+               courses:
+                    cursos
+                         ?.map((course) =>
+                              course.nombre.length > 10
+                                   ? `${course.nombre.slice(0, 10)}...`
+                                   : course.nombre
+                         )
+                         .join("---") || "no info",
           }));
      return {
           columns,
