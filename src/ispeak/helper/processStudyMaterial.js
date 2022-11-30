@@ -11,7 +11,7 @@ export const processStudyMaterial = ({
           Id: materialData.id,
           Nombre: nombre,
           ModuloId: moduleSelected,
-          ClaseNumero: claseSelected.slice(6,8),
+          ClaseNumero: claseSelected,
           ArchivoPDF: materialData.archivoPDF,
           LinkVideo: linkVideo,
           LinkVideo2: materialData.linkVideo2,

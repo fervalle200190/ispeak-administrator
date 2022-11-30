@@ -42,12 +42,12 @@ export const StudyMaterialPage = () => {
           });
      };
 
-     const maxClass = useMemo(() => {
-          const orderStudy = studyMaterial?.rows?.sort((a, b) =>
-               parseInt(a.class.slice(6, 8).trim()) < parseInt(b.class.slice(6, 8).trim()) ? 1 : -1
-          );
-          return orderStudy.length >= 0 ? orderStudy[0]?.class?.slice(6, 8).trim() : 3;
-     }, [studyMaterial]);
+     // const maxClass = useMemo(() => {
+     //      const orderStudy = studyMaterial?.rows?.sort((a, b) =>
+     //           parseInt(a.class) < parseInt(b.class) ? 1 : -1
+     //      );
+     //      return orderStudy.length >= 0 ? orderStudy[0]?.class : 3;
+     // }, [studyMaterial]);
 
      const handleDelete = async () => {
           const { ok, errorMessage } = await deleteStudyMaterial(id);
@@ -96,7 +96,7 @@ export const StudyMaterialPage = () => {
                     handleModal={closeModal}
                     id={onEditId}
                     studyMaterialsChangers={studyMaterialsChangers}
-                    totalStudyMaterial={maxClass}
+                    totalStudyMaterial={15}
                />
                <SnackBarComponent handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </>
