@@ -43,7 +43,7 @@ export const EditStudyMaterialModal = ({
           return [...Array(totalStudyMaterial ? parseInt(totalStudyMaterial) : 0)].map(
                (item, i) => ({
                     label: `Clase ${i + 1}`,
-                    value: `${i + 1}`,
+                    value: i + 1,
                })
           );
      }, [totalStudyMaterial]);
@@ -79,7 +79,7 @@ export const EditStudyMaterialModal = ({
                courseSelected === materialData.cursoId &&
                moduleSelected === materialData.moduloId &&
                nombre === materialData.nombre &&
-               claseSelected === `Clase ${materialData.claseNumero}` &&
+               claseSelected === materialData.claseNumero &&
                linkVideo === materialData.linkVideo &&
                file === ""
           ) {
@@ -93,7 +93,7 @@ export const EditStudyMaterialModal = ({
           if (
                courseSelected !== materialData.cursoId ||
                moduleSelected !== materialData.moduloId ||
-               claseSelected === `Clase ${materialData.claseNumero}` ||
+               claseSelected === materialData.claseNumero ||
                linkVideo === materialData.linkVideo ||
                nombre !== materialData.nombre
           ) {
