@@ -121,6 +121,7 @@ export const EditStudyMaterialModal = ({
                     class: claseSelected,
                     active: materialData.activo ? "Activo" : "No Activo",
                });
+               getMaterial()
           }
           if (file !== "") {
                const res = await updateImagePreview(materialData.id, file);
