@@ -1,60 +1,55 @@
-import { Box, Button, Grid } from "@mui/material";
-import { LineChart, PieChart } from "../components";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { getStatisticsCountry, getStatisticsGenre, getStatisticsLevel } from "../../utils";
+import { BarChart, PieChart } from "../components";
 
 export const DashboardPage = () => {
-     // const data = [
-     //      {
-     //           name: "Page A",
-     //           uv: 4000,
-     //           pv: 2400,
-     //           amt: 2400,
-     //      },
-     //      {
-     //           name: "Page B",
-     //           uv: 3000,
-     //           pv: 1398,
-     //           amt: 2210,
-     //      },
-     //      {
-     //           name: "Page C",
-     //           uv: 2000,
-     //           pv: 9800,
-     //           amt: 2290,
-     //      },
-     //      {
-     //           name: "Page D",
-     //           uv: 2780,
-     //           pv: 3908,
-     //           amt: 2000,
-     //      },
-     //      {
-     //           name: "Page E",
-     //           uv: 1890,
-     //           pv: 4800,
-     //           amt: 2181,
-     //      },
-     //      {
-     //           name: "Page F",
-     //           uv: 2390,
-     //           pv: 3800,
-     //           amt: 2500,
-     //      },
-     //      {
-     //           name: "Page G",
-     //           uv: 3490,
-     //           pv: 4300,
-     //           amt: 2100,
-     //      },
-     // ];
+     const [statistics, setStatistics] = useState({ level: [], genre: [] });
+
+     const getData = async () => {
+          const { levelStatistics } = await getStatisticsLevel();
+          const { genreStatistics } = await getStatisticsGenre();
+          const { countryStatistics } = await getStatisticsCountry()
+          console.log(countryStatistics);
+          // console.log(genreStatistics);
+          const levelStats = [
+               { level: "junior", junior: levelStatistics.junior, juniorColor: "#g00" },
+               { level: "middle", middle: levelStatistics.middle, middleColor: "#g00" },
+               { level: "senior", senior: levelStatistics.senior, middleColor: "#g00" },
+               { level: "expert", expert: levelStatistics.expert, middleColor: "#g00" },
+               {
+                    level: "all level",
+                    ["all level"]: levelStatistics.allLevel,
+                    ["all levelColor"]: "#g00",
+               },
+          ];
+
+          const genreStats = [
+               {
+                    id: "female",
+                    label: "female",
+                    value: genreStatistics.femenino,
+               },
+               {
+                    id: "male",
+                    label: "male",
+                    value: genreStatistics.masculino,
+               },
+               {
+                    id: 'other',
+                    label: 'other',
+                    value: genreStatistics.otros,
+               },
+          ];
+          setStatistics({ level: levelStats, genre: genreStats });
+     };
+     useEffect(() => {
+          getData();
+     }, []);
 
      return (
           <>
-               <Grid
-                    container
-                    justifyContent="flex-start"
-                    alignItems={"flex-start"}
-                    spacing={2}
-               >
+               <Grid container justifyContent="flex-start" alignItems={"flex-start"} spacing={2}>
                     <Grid item xs={10} sm={7} md={7}>
                          <Box
                               height={350}
@@ -64,7 +59,8 @@ export const DashboardPage = () => {
                                    transition: "all 0.2s ease-in-out",
                               }}
                          >
-                              <LineChart />
+                              <Typography variant='h6'>Usuarios por curso</Typography>
+                              <BarChart data={statistics.level} />
                          </Box>
                     </Grid>
                     <Grid item xs={10} sm={4} md={4}>
@@ -76,7 +72,8 @@ export const DashboardPage = () => {
                                    transition: "all 0.2s ease-in-out",
                               }}
                          >
-                              <PieChart />
+                              <Typography variant='h6'>Género de los usuarios</Typography>
+                              <PieChart data={statistics.genre} />
                          </Box>
                     </Grid>
                </Grid>
