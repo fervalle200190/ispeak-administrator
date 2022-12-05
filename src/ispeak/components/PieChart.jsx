@@ -14,6 +14,7 @@ export const PieChart = ({ data /* see data tab */ }) => (
           cornerRadius={3}
           activeOuterRadiusOffset={8}
           borderWidth={1}
+          colors={["#FFB439", "#088AEE", "#07B2A3", "#000027", "#F24E1E"]}
           borderColor={{
                from: "color",
                modifiers: [["darker", 0.2]],

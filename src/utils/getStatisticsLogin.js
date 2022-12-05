@@ -1,11 +1,11 @@
 import { id, ispeakAPI } from "./IspeakAPI";
 
-export const getStatisticsLogin = async () => {
+export const getStatisticsLogin = async (days) => {
      try {
-          const resp = await ispeakAPI(`/Usuario/GetEstadisticasLogin/${id}`);
+          const { data } = await ispeakAPI(`/Usuario/GetEstadisticasLogin/${days}/${id}`);
           return {
                ok: true,
-               userStatistics: resp,
+               userStatistics: data,
           };
      } catch (error) {
           return {

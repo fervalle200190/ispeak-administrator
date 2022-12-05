@@ -16,7 +16,7 @@ export const BarChartSales = ({ data, currencies }) => (
         padding={0.3}
         valueScale={{ type: 'linear' }}
         indexScale={{ type: 'band', round: true }}
-        colors={{ scheme: 'nivo' }}
+        colors={["#FFB439", "#088AEE", "#07B2A3", "#000027", "#F24E1E"]}
         defs={[
             {
                 id: 'dots',
