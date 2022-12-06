@@ -43,7 +43,7 @@ export const TabsTwoOnDemand = () => {
 
      const handleDelete = async () => {
           const res = await deleteModule(id);
-          if (!res.ok) return setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage });
+          if (!res.ok) return setSnackBarInfo({ ...errorSnackbar, message: 'Ha ocurrido un error' });
           modulesChangers.deleteData(id);
           setSnackBarInfo({
                ...initialSnackBar,

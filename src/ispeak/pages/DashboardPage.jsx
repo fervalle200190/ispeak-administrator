@@ -548,16 +548,17 @@ export const DashboardPage = () => {
                     container
                     justifyContent="flex-start"
                     alignItems={"flex-start"}
-                    spacing={2}
+                    spacing={4}
                     pb={10}
                >
                     <Grid item xs={10} sm={7} md={7}>
                          <Box
                               height={350}
                               sx={{
-                                   borderRadius: "3px",
+                                   borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
+                                   boxShadow: '0 0 10px #0003'
                               }}
                          >
                               <Typography variant="h6">Usuarios por curso</Typography>
@@ -568,9 +569,10 @@ export const DashboardPage = () => {
                          <Box
                               height={350}
                               sx={{
-                                   borderRadius: "3px",
+                                   borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
+                                   boxShadow: '0 0 10px #0003'
                               }}
                          >
                               <Typography variant="h6">Género de los usuarios</Typography>
@@ -581,22 +583,24 @@ export const DashboardPage = () => {
                          <Box
                               height={350}
                               sx={{
-                                   borderRadius: "3px",
+                                   borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
+                                   boxShadow: '0 0 10px #0003'
                               }}
                          >
                               <Typography variant="h6">Actividad de los estudiantes</Typography>
                               <LineChart data={statistics.active} />
                          </Box>
                     </Grid>
-                    <Grid item xs={10} sm={6} md={6}>
+                    <Grid item xs={10} sm={5} md={5}>
                          <Box
                               height={350}
                               sx={{
-                                   borderRadius: "3px",
+                                   borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
+                                   boxShadow: '0 0 10px #0003'
                               }}
                          >
                               <Typography variant="h6">Paises</Typography>
@@ -607,9 +611,10 @@ export const DashboardPage = () => {
                          <Box
                               height={350}
                               sx={{
-                                   borderRadius: "3px",
+                                   borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
+                                   boxShadow: '0 0 10px #0003'
                               }}
                          >
                               <Typography variant="h6">Ventas por moneda</Typography>
