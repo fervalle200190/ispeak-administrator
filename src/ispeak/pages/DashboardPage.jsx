@@ -624,7 +624,7 @@ export const DashboardPage = () => {
                               />
                          </Box>
                     </Grid>
-                    <Grid item xs={12} md={6} height={"400px"} mt={5}>
+                    <Grid item xs={12} md={6} height={"400px"}>
                          <DataGrid columns={tables.bills.columns} rows={tables.bills.rows} />
                     </Grid>
                </Grid>

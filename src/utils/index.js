@@ -70,3 +70,4 @@ export * from "./getStatisticsLevel";
 export * from './getStatisticsGenre'
 export * from './getStatisticsCountry'
 export * from './getStatisticsBills'
+export * from './deleteAttend'
