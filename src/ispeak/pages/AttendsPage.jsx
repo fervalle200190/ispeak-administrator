@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useContext, useState } from "react";
+import { useDeleteAll } from "../../hooks";
 import { deleteAttend } from "../../utils";
 import {
      DataGridWithModal,
@@ -23,7 +24,11 @@ const errorSnackbar = {
 };
 
 export const AttendsPage = () => {
-     const { attend, getAttends } = useContext(DataContext);
+     const { attend, getAttends, attendsChangers } = useContext(DataContext);
+     const { elementsToDelete, onChangeElements, onDeleteAll } = useDeleteAll(
+          attendsChangers.onDeleteSeveral,
+          deleteAttend
+     );
      const { isModalOpen: isModalDeleteOpen, handleModal, id } = useContext(ModalContext);
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
@@ -67,13 +72,15 @@ export const AttendsPage = () => {
                     title="Asistencias"
                     buttonTitle={"Agregar asistencias"}
                     url="/attendance/ingresar"
+                    elementsToDelete={elementsToDelete}
+                    onDeleteAll={onDeleteAll}
                />
                <Box height="100vh" sx={{ pr: 2 }}>
                     <DataGridWithModal
                          columns={attend.columns}
                          rows={attend.rows}
                          handleCell={openModal}
-                         onChangeElements={() => {}}
+                         onChangeElements={onChangeElements}
                     />
                </Box>
                <EditAttendModal id={onEditId} closeModal={closeModal} isModalOpen={isModalOpen} />

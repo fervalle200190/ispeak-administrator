@@ -148,6 +148,8 @@ export const DataProvider = ({ children }) => {
 
      const supportMaterialsChangers = useChangeData(supportMaterial, setSupportMaterial);
 
+     const attendsChangers = useChangeData(attend, setAttend);
+
      const signUpsOnDemandChangers = useChangeData(signUpOnDemand, setSignUpOnDemand);
 
      const signUpsChangers = useChangeData(signUp, setSignUp);
@@ -206,7 +208,8 @@ export const DataProvider = ({ children }) => {
                     signUpsChangers,
                     getAttends,
                     getTests,
-                    getStudentsAndProfessors
+                    getStudentsAndProfessors,
+                    attendsChangers
                }}
           >
                {children}

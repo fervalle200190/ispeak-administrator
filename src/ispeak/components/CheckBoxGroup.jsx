@@ -8,7 +8,7 @@ export const CheckBoxGroup = ({ modules, modulesSelected, handleModule }) => {
                     Selecciona los modulos que vas a asociar:
                </Typography>
                {modules.map((module, i) => (
-                    <div key={i}>
+                    <div key={i} style={{display: 'flex', flexDirection: 'column'}}>
                          <Typography fontWeight={600} sx={{ mt: 2 }}>
                               {module.courseName[0]}
                          </Typography>

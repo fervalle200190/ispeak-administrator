@@ -33,7 +33,7 @@ export const StudyMaterialPage = () => {
      const { isModalOpen: isModalDeleteOpen, handleModal, id } = useContext(ModalContext);
      const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const [isModalOpen, setIsModalOpen] = useState(false);
-     const [onEditId, setOnEditId] = useState("");
+     const [onEditId, setOnEditId] = useState(""); 
 
      const closeSnackbar = () => {
           setSnackBarInfo({
