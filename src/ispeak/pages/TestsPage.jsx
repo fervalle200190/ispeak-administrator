@@ -19,7 +19,7 @@ export const TestsPage = () => {
      return (
           <>
                <PageHeader title={"Resultados de los tests"} />
-               <Box height={"650px"}>
+               <Box height={"930px"}>
                     <DataGridWithModal
                          columns={test.columns}
                          rows={test.rows}

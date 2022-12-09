@@ -10,7 +10,7 @@ export const Datagrid = ({ rows, columns, updateHandler, stopHandler }) => {
                     onCellEditCommit={(params) => {
                          updateHandler(params);
                     }}
-                    pageSize={10}
+                    pageSize={15}
                     rowsPerPageOptions={[10]}
                     disableSelectionOnClick
                />

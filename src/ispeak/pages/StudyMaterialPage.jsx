@@ -83,7 +83,7 @@ export const StudyMaterialPage = () => {
                     elementsToDelete={elementsToDelete}
                     onDeleteAll={onDeleteAll}
                />
-               <Box height={"100vh"} sx={{ pr: 2 }}>
+               <Box height={"930px"} sx={{ pr: 2 }}>
                     <DataGridWithModal
                          columns={studyMaterial.columns}
                          rows={studyMaterial.rows}

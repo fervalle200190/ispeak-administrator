@@ -7,7 +7,7 @@ export const DataGridWithModal = ({ rows, columns, handleCell, onChangeElements 
                     rows={rows}
                     columns={columns}
                     onCellDoubleClick={(params) => handleCell(params)}
-                    pageSize={10}
+                    pageSize={15}
                     rowsPerPageOptions={[10]}
                     checkboxSelection={true}
                     onSelectionModelChange={(params)=> onChangeElements(params)}

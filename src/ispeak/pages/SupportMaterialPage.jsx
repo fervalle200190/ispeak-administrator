@@ -49,7 +49,7 @@ export const SupportMaterialPage = () => {
                     buttonTitle={"Agregar Material de refuerzo"}
                     url="/support-material/ingresar"
                />
-               <Box height={"100vh"} sx={{ pr: 2 }}>
+               <Box height={"930px"} sx={{ pr: 2 }}>
                     <DataGridWithModal
                          columns={supportMaterial.columns}
                          rows={supportMaterial.rows}

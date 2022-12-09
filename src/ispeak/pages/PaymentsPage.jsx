@@ -19,7 +19,7 @@ export const PaymentsPage = () => {
      return (
           <>
                <PageHeader title={"Pagos"} />
-               <Box height={"650px"}>
+               <Box height={"930px"}>
                     <DataGridWithModal
                          columns={payments.columns}
                          rows={payments.rows}

@@ -45,7 +45,7 @@ export const StudentsPage = () => {
                     buttonTitle={"Agregar Alumno"}
                     url={"/students/ingresar"}
                />
-               <Box height={"650px"} sx={{ pr: 2 }}>
+               <Box height={"930px"} sx={{ pr: 2 }}>
                     <DataGridWithModal
                          rows={students.rows}
                          columns={students.columns}

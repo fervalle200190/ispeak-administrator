@@ -43,7 +43,7 @@ export const CoursesPage = () => {
                     title="¿Estas seguro de eliminar este curso?"
                />
                <PageHeader title="Cursos" buttonTitle="Agregar Curso" url={"/courses/ingresar"} />
-               <Box height={"100vh"} sx={{ pr: 2 }}>
+               <Box height={"930px"} sx={{ pr: 2 }}>
                     <DataGridWithModal
                          rows={courses.rows}
                          columns={courses.columns}

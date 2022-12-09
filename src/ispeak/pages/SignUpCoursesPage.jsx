@@ -37,7 +37,7 @@ export const SignUpCoursesPage = () => {
                     buttonTitle="Agregar inscripciones"
                     url="/sign-courses/ingresar"
                />
-               <Box height={"100vh"} sx={{ pr: 2 }}>
+               <Box height={"930px"} sx={{ pr: 2 }}>
                     <DataGridWithModal
                          columns={signUp.columns}
                          rows={signUp.rows}

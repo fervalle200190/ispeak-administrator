@@ -50,7 +50,7 @@ export const ProgramsPage = () => {
                     buttonTitle={"Agregar Programa"}
                     url={"/programs/ingresar"}
                />
-               <Box height={"100vh"} sx={{ pr: 2 }}>
+               <Box height={"930px"} sx={{ pr: 2 }}>
                     <Datagrid
                          rows={programs.rows}
                          columns={programs.columns}

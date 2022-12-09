@@ -42,7 +42,7 @@ export const ProfessorPage = () => {
                     buttonTitle={"Agregar Profesor"}
                     url={"/professor/ingresar"}
                />
-               <Box height={"100vh"} sx={{ pr: 2 }}>
+               <Box height={"930px"} sx={{ pr: 2 }}>
                     <Datagrid
                          rows={professors.rows}
                          columns={professors.columns}

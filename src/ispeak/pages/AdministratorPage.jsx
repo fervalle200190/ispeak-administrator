@@ -41,7 +41,7 @@ export const AdministratorPage = () => {
                     buttonTitle={"Agregar administrador"}
                     url="/administrators/ingresar"
                />
-               <Box height="100vh" sx={{ pr: 2 }}>
+               <Box height="930px" sx={{ pr: 2 }}>
                     <Datagrid
                          columns={admin.columns}
                          rows={admin.rows}
