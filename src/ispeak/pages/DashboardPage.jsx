@@ -466,14 +466,14 @@ export const DashboardPage = () => {
           countries: [],
      });
      const [tables, setTables] = useState({ bills: { columns: [], rows: [] } });
+     const [usersTime, setUsersTime] = useState(3);
 
      const getData = async () => {
           const { levelStatistics } = await getStatisticsLevel();
           const { genreStatistics } = await getStatisticsGenre();
           const { countryStatistics } = await getStatisticsCountry();
           const { billsStatistics } = await getStatisticsBills();
-          const { userStatistics } = await getStatisticsLogin(60);
-          console.log(countryStatistics);
+          const { userStatistics } = await getStatisticsLogin(usersTime);
           const levelStats = [
                {
                     level: "junior",
@@ -508,19 +508,13 @@ export const DashboardPage = () => {
                },
           ];
           const billStats = getBillStats(billsStatistics);
-
-          const activeStats = [
-               {
-                    id: "students",
-                    color: "hsl(177, 70%, 50%)",
-                    data: userStatistics.map(({ hora, users }) => ({ y: users, x: hora })),
-               },
-          ];
-
           const countryStats = {
-               name: 'countries',
-               children: countryStatistics.map((stat)=> ({name: stat.nombre, loc: stat.cantidad}))
-          }
+               name: "countries",
+               children: countryStatistics.map((stat) => ({
+                    name: stat.nombre,
+                    loc: stat.cantidad,
+               })),
+          };
 
           const columns = [
                { field: "fecha", headerName: "Fecha", width: 250 },
@@ -531,16 +525,29 @@ export const DashboardPage = () => {
                bills: { columns, rows: billsStatistics.map((bill, i) => ({ ...bill, id: i })) },
           });
           setStatistics({
+               ...statistics,
                level: levelStats,
                genre: genreStats,
                bills: { billChart: billStats.chartData, currencies: billStats.cleanedCurrencies },
-               active: activeStats,
                countries: countryStats,
+               active: userStatistics
+          });
+     };
+
+     const getUsers = async () => {
+          const { userStatistics } = await getStatisticsLogin(usersTime);
+          setStatistics({
+               ...statistics,
+               active: userStatistics,
           });
      };
      useEffect(() => {
           getData();
      }, []);
+
+     useEffect(() => {
+          getUsers();
+     }, [usersTime]);
 
      return (
           <>
@@ -558,7 +565,7 @@ export const DashboardPage = () => {
                                    borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
-                                   boxShadow: '0 0 10px #0003'
+                                   boxShadow: "0 0 10px #0003",
                               }}
                          >
                               <Typography variant="h6">Usuarios por curso</Typography>
@@ -572,7 +579,7 @@ export const DashboardPage = () => {
                                    borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
-                                   boxShadow: '0 0 10px #0003'
+                                   boxShadow: "0 0 10px #0003",
                               }}
                          >
                               <Typography variant="h6">Género de los usuarios</Typography>
@@ -586,11 +593,16 @@ export const DashboardPage = () => {
                                    borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
-                                   boxShadow: '0 0 10px #0003'
+                                   boxShadow: "0 0 10px #0003",
                               }}
                          >
                               <Typography variant="h6">Actividad de los estudiantes</Typography>
-                              <LineChart data={statistics.active} />
+                              {statistics.active.length > 0 && (
+                                   <LineChart data={statistics.active} />
+                              )}
+                              <Button onClick={() => setUsersTime(3)}>3 dias</Button>
+                              <Button onClick={() => setUsersTime(7)}>1 semana</Button>
+                              <Button onClick={() => setUsersTime(60)}>2 meses</Button>
                          </Box>
                     </Grid>
                     <Grid item xs={10} sm={5} md={5}>
@@ -600,7 +612,7 @@ export const DashboardPage = () => {
                                    borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
-                                   boxShadow: '0 0 10px #0003'
+                                   boxShadow: "0 0 10px #0003",
                               }}
                          >
                               <Typography variant="h6">Paises</Typography>
@@ -614,7 +626,7 @@ export const DashboardPage = () => {
                                    borderRadius: "13px",
                                    padding: 5,
                                    transition: "all 0.2s ease-in-out",
-                                   boxShadow: '0 0 10px #0003'
+                                   boxShadow: "0 0 10px #0003",
                               }}
                          >
                               <Typography variant="h6">Ventas por moneda</Typography>

@@ -2,7 +2,7 @@ import { id, ispeakAPI } from "./IspeakAPI";
 
 export const getStatisticsLogin = async (days) => {
      try {
-          const { data } = await ispeakAPI(`/Usuario/GetEstadisticasLogin/${days}/${id}`);
+          const { data } = await ispeakAPI(`/Usuario/GetEstadisticasActividad/${days}/${id}`);
           return {
                ok: true,
                userStatistics: data,
