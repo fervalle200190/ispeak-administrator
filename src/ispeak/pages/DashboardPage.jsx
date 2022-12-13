@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import {
@@ -467,6 +467,7 @@ export const DashboardPage = () => {
      });
      const [tables, setTables] = useState({ bills: { columns: [], rows: [] } });
      const [usersTime, setUsersTime] = useState(3);
+     const [amount, setAmount] = useState(0);
 
      const getData = async () => {
           const { levelStatistics } = await getStatisticsLevel();
@@ -530,15 +531,27 @@ export const DashboardPage = () => {
                genre: genreStats,
                bills: { billChart: billStats.chartData, currencies: billStats.cleanedCurrencies },
                countries: countryStats,
-               active: userStatistics
+               active: userStatistics.sort((a, b) => {
+                    let partes = a.fecha.split("/");
+                    let fa = new Date(partes[2], partes[1], partes[0]);
+                    partes = b.fecha.split("/");
+                    let fb = new Date(partes[2], partes[1], partes[0]);
+                    return fa - fb ? 1 : -1;
+               }),
           });
      };
 
-     const getUsers = async () => {
-          const { userStatistics } = await getStatisticsLogin(usersTime);
+     const getUsers = async (days) => {
+          const { userStatistics } = await getStatisticsLogin(days);
           setStatistics({
                ...statistics,
-               active: userStatistics,
+               active: userStatistics.sort((a, b) => {
+                    let partes = a.fecha.split("/");
+                    let fa = new Date(partes[2], partes[1], partes[0]);
+                    partes = b.fecha.split("/");
+                    let fb = new Date(partes[2], partes[1], partes[0]);
+                    return fa - fb ? 1 : -1;
+               }),
           });
      };
      useEffect(() => {
@@ -546,8 +559,13 @@ export const DashboardPage = () => {
      }, []);
 
      useEffect(() => {
-          getUsers();
+          getUsers(usersTime);
      }, [usersTime]);
+
+     useEffect(() => {
+          if (amount === 0) return;
+          getUsers(amount);
+     }, [amount]);
 
      return (
           <>
@@ -588,7 +606,7 @@ export const DashboardPage = () => {
                     </Grid>
                     <Grid item xs={10} sm={6} md={6}>
                          <Box
-                              height={350}
+                              height={400}
                               sx={{
                                    borderRadius: "13px",
                                    padding: 5,
@@ -603,6 +621,11 @@ export const DashboardPage = () => {
                               <Button onClick={() => setUsersTime(3)}>3 dias</Button>
                               <Button onClick={() => setUsersTime(7)}>1 semana</Button>
                               <Button onClick={() => setUsersTime(60)}>2 meses</Button>
+                              <TextField
+                                   onChange={(e) => setAmount(e.target.value)}
+                                   sx={{ width: 60, maxHeight: 20 }}
+                                   value={amount}
+                              />
                          </Box>
                     </Grid>
                     <Grid item xs={10} sm={5} md={5}>
