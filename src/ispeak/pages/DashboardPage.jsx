@@ -217,9 +217,9 @@ export const DashboardPage = () => {
                               }}
                          >
                               <Typography variant='h6'>Actividad de los estudiantes</Typography>
-                              {statistics.active.length > 0 && (
+                              {statistics.active.length > 0? (
                                    <LineChart data={statistics.active} />
-                              )}
+                              ): <Typography my={5} variant='h6'>No hay rango para mostrar</Typography>}
                               <Button onClick={() => setUsersTime(3)}>3 dias</Button>
                               <Button onClick={() => setUsersTime(7)}>1 semana</Button>
                               <Button onClick={() => setUsersTime(60)}>2 meses</Button>
